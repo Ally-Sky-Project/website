@@ -1,0 +1,209 @@
+:root {
+  --void: #06080c;
+  --panel: #0c1018;
+  --ink: #e8eef4;
+  --muted: #7a8a9a;
+  --line: rgba(232, 238, 244, 0.14);
+  --accent: #8ecae8;
+  --accent-dim: #5a9ab8;
+  --warn: #d9956a;
+  --display: "Inter", system-ui, sans-serif;
+  --mono: "DM Mono", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--void);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse 90% 60% at 50% 0%, rgba(142, 202, 232, 0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 80% 100%, rgba(196, 132, 168, 0.05) 0%, transparent 50%),
+    var(--void);
+  font-family: var(--display);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.beacon {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 3rem;
+}
+
+.transmission-wrap {
+  --tear-top: 40%;
+  --tear-height: 4%;
+  --tear-x: 0px;
+  --tear-chroma: 0px;
+  --tear-opacity: 0.9;
+  position: relative;
+  margin: 0;
+  isolation: isolate;
+}
+
+.transmission-noise {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+  opacity: 0.38;
+  mix-blend-mode: soft-light;
+}
+
+.transmission-grain-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.transmission-wrap::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0.07;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.4) 2px,
+    rgba(0, 0, 0, 0.4) 3px
+  );
+}
+
+.transmission {
+  margin: 0;
+  padding: 1.25rem 1rem;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: clamp(0.62rem, 2.4vw, 0.78rem);
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  background: transparent;
+  text-shadow:
+    1px 0 rgba(255, 90, 190, 0.28),
+    -1px 0 rgba(142, 202, 232, 0.28);
+}
+
+.transmission-glitch-zone {
+  position: relative;
+}
+
+.transmission-main {
+  position: relative;
+  z-index: 1;
+}
+
+.transmission-routing {
+  position: relative;
+  z-index: 1;
+  padding-top: 0;
+  text-shadow: none;
+}
+
+.transmission-meta {
+  padding-top: 0;
+}
+
+.transmission-wrap--static {
+  isolation: isolate;
+}
+
+.transmission-routing .channel-link {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.transmission-routing .channel-link:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+.transmission-routing .channel-status {
+  color: var(--warn);
+  opacity: 0.88;
+}
+
+.transmission-tear {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  margin: 0;
+  pointer-events: none;
+  clip-path: inset(var(--tear-top) 0 calc(100% - var(--tear-top) - var(--tear-height)) 0);
+  transform: translateX(var(--tear-x)) skewX(var(--tear-skew, 0deg));
+  text-shadow:
+    calc(3px + var(--tear-chroma)) 0 rgba(255, 40, 150, 0.75),
+    calc(-3px - var(--tear-chroma)) 0 rgba(80, 230, 255, 0.75);
+  opacity: 0;
+}
+
+.transmission-wrap.is-tearing .transmission-tear {
+  opacity: var(--tear-opacity);
+}
+
+.transmission-wrap.is-tearing .transmission-main {
+  animation: beacon-jitter 0.06s steps(3) infinite;
+}
+
+@keyframes beacon-jitter {
+  0% {
+    transform: translateX(0);
+  }
+  33% {
+    transform: translateX(2px);
+  }
+  66% {
+    transform: translateX(-2px);
+  }
+}
+
+.transmission .dim {
+  color: var(--muted);
+}
+
+.transmission .accent {
+  color: var(--accent);
+}
+
+.transmission .blink {
+  animation: beacon-blink 1.4s step-end infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .transmission .blink {
+    animation: none;
+  }
+
+  .transmission-wrap.is-tearing .transmission-main {
+    animation: none;
+  }
+
+  .transmission-tear {
+    display: none;
+  }
+
+  .transmission-noise {
+    opacity: 0.12;
+    mix-blend-mode: normal;
+  }
+}
+
+@keyframes beacon-blink {
+  50% {
+    opacity: 0.35;
+  }
+}
+

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Ally Sky Engineering — Quantum HTTP Transfer Protocol (QHTTP) public beacon. Under construction."
+    />
+    <meta name="theme-color" content="#06080c" />
+    <meta name="robots" content="index, follow" />
+    <title>Ally Sky Engineering · QHTTP beacon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400&family=Inter:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/beacon.css" />
+  </head>
+  <body>
+    <div class="beacon">
+      <div class="transmission-wrap" id="transmission-wrap">
+        <div class="transmission-noise" aria-hidden="true"></div>
+        <div class="transmission-glitch-zone">
+          <pre
+            class="transmission transmission-main"
+            id="transmission"
+            aria-label="Engineering transmission"
+          ></pre>
+          <pre class="transmission transmission-tear" aria-hidden="true"></pre>
+        </div>
+        <pre
+          class="transmission transmission-routing no-glitch"
+          id="channel-table"
+          hidden
+          aria-label="Outbound channel registry"
+        ></pre>
+        <pre class="transmission transmission-routing no-glitch transmission-meta" aria-label="Beacon telemetry">
+----------------------------------------------------------------
+BEACON TELEMETRY (QHTTP)
+----------------------------------------------------------------
+> CLIENT TRACKING:  DISABLED
+> ANALYTICS:        NONE
+> COOKIES:          NONE
+> POLICY:           <a class="channel-link" href="legal/privacy.html">PRIVACY TRANSMISSION</a>
+================================================================</pre>
+      </div>
+    </div>
+
+    <script type="module">
+      const CODATA = {
+        hbar: 1.054571817e-34,
+        G: 6.6743e-11,
+        c: 299792458,
+      };
+
+      function planckHz() {
+        const { hbar, G, c } = CODATA;
+        const tP = Math.sqrt((hbar * G) / c ** 5);
+        return 1 / tP;
+      }
+
+      function buildTransmission() {
+        const f = planckHz();
+        const fStr = f.toExponential(6);
+
+        return `================================================================
+ALLY SKY ENGINEERING // QUANTUM TRANSPORT GROUP
+================================================================
+
+QUANTUM HTTP TRANSFER PROTOCOL (QHTTP) 1.6.1b
+STATUS: UNDER CONSTRUCTION
+
+ERROR CODE CORRECTION FOR STABILIZED TRANSMISSION ACROSS UNCERTAIN,
+NOISY TIMELINE TRAJECTORIES HAS PROVEN CHALLENGING.
+
+TARGET CLOCK: <span class="no-glitch">f_P = ${fStr} Hz</span>
+SYNC:         PENDING ECC CONVERGENCE
+
+> LINK STATUS: <span class="blink no-glitch">STANDBY...</span>
+> QHTTP HANDSHAKE:     [ retry 3/∞ ]
+> TIMELINE DRIFT:      ± unresolved
+> ECC LAYER:           RECALIBRATING
+================================================================`;
+      }
+
+      const pre = document.getElementById("transmission");
+      pre.innerHTML = buildTransmission();
+
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const { initBeaconGlitch } = await import("./js/beacon-glitch.js");
+      initBeaconGlitch(document.getElementById("transmission-wrap"), { reducedMotion });
+
+      async function loadChannels() {
+        const table = document.getElementById("channel-table");
+        try {
+          const res = await fetch("site.json");
+          if (!res.ok) return;
+          const data = await res.json();
+          const social = data.social || {};
+          const labels = {
+            youtube: "YOUTUBE",
+            instagram: "INSTAGRAM",
+            tiktok: "TIKTOK",
+            github: "GITHUB",
+          };
+          const lines = [
+            "----------------------------------------------------------------",
+            "OUTBOUND CHANNEL REGISTRY (QHTTP)",
+            "----------------------------------------------------------------",
+          ];
+          let count = 0;
+          for (const [key, label] of Object.entries(labels)) {
+            const url = social[key];
+            if (!url) continue;
+            count++;
+            const esc = (s) =>
+              s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+            lines.push(
+              `> OPEN CHANNEL: <a class="channel-link" href="${esc(url)}" rel="noopener noreferrer">${label}</a>  <span class="channel-status">[ IDLE · AWAITING PAYLOAD ]</span>`
+            );
+          }
+          if (count === 0) return;
+          table.innerHTML = lines.join("\n");
+          table.hidden = false;
+        } catch {
+          /* static hosting without site.json is fine */
+        }
+      }
+
+      loadChannels();
+    </script>
+  </body>
+</html>

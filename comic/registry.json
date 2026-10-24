@@ -1,0 +1,26 @@
+{
+  "releases": [
+    {
+      "id": "ad5ba57c25217bfe1",
+      "title": "Did we just launch?",
+      "version": 1,
+      "deck": "comic/slides/decks/did-we-just-launch.slides.json",
+      "gscript": "comic/slides/stories/did-we-just-launch.gscript",
+      "published_at": "2026-10-24T05:59:07.456Z",
+      "reality_layer": "description",
+      "reconstruction": "ai_frame_stack",
+      "frame_count": 8,
+      "payload_bytes": 523,
+      "carousel": [
+        "/comic/assets/did-we-just-launch/01.png",
+        "/comic/assets/did-we-just-launch/02.png",
+        "/comic/assets/did-we-just-launch/03.png",
+        "/comic/assets/did-we-just-launch/04.png",
+        "/comic/assets/did-we-just-launch/05.png",
+        "/comic/assets/did-we-just-launch/06.png",
+        "/comic/assets/did-we-just-launch/07.png",
+        "/comic/assets/did-we-just-launch/08.png"
+      ]
+    }
+  ]
+}

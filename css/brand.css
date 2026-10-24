@@ -1,0 +1,25 @@
+.site-brand {
+  margin: 0 0 1.5rem;
+}
+
+.site-brand__link {
+  display: block;
+  max-width: 100%;
+  text-decoration: none;
+  opacity: 0.92;
+  transition: opacity 0.15s ease;
+}
+
+.site-brand__link:hover {
+  opacity: 1;
+}
+
+.site-brand__link:focus-visible {
+  outline: 1px solid var(--accent, #8ecae8);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.site-brand--reader {
+  margin-bottom: 1.25rem;
+}

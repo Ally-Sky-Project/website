@@ -8,7 +8,8 @@
   --accent-dim: #5a9ab8;
   --warn: #d9956a;
   --display: "Inter", system-ui, sans-serif;
-  --mono: "DM Mono", ui-monospace, monospace;
+  --mono: "Source Code Pro", ui-monospace, monospace;
+  --beacon-transmission-size: 12pt;
 }
 
 * {
@@ -17,6 +18,27 @@
 
 html {
   background: var(--void);
+  overflow-x: clip;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-dim) var(--panel);
+}
+
+html::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html::-webkit-scrollbar-track {
+  background: var(--panel);
+}
+
+html::-webkit-scrollbar-thumb {
+  background: rgba(232, 238, 244, 0.18);
+  border-radius: 4px;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-dim);
 }
 
 body {
@@ -35,8 +57,10 @@ body {
 
 .beacon {
   max-width: 44rem;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem 1.25rem 3rem;
+  min-width: 0;
 }
 
 .transmission-wrap {
@@ -48,6 +72,8 @@ body {
   position: relative;
   margin: 0;
   isolation: isolate;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .transmission-noise {
@@ -85,11 +111,16 @@ body {
 .transmission {
   margin: 0;
   padding: 1.25rem 1rem;
-  overflow-x: auto;
+  max-width: 100%;
+  overflow-x: hidden;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   font-family: var(--mono);
-  font-size: clamp(0.62rem, 2.4vw, 0.78rem);
+  font-size: var(--beacon-transmission-size);
+  font-style: normal;
+  font-weight: 500;
   line-height: 1.45;
-  letter-spacing: 0.02em;
+  letter-spacing: 0;
   color: var(--ink);
   background: transparent;
   text-shadow:
@@ -99,6 +130,8 @@ body {
 
 .transmission-glitch-zone {
   position: relative;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .transmission-main {

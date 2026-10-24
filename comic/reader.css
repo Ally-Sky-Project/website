@@ -1,0 +1,112 @@
+:root {
+  --void: #06080c;
+  --ink: #e8eef4;
+  --muted: #7a8a9a;
+  --accent: #8ecae8;
+  --mono: "Source Code Pro", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--void);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 3rem;
+}
+
+h1 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0 0 0.5rem;
+  color: var(--accent);
+}
+
+.meta {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.meta code {
+  color: var(--ink);
+}
+
+.reader-crosspost .transmissions-cross {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  margin-left: 0.25rem;
+}
+
+.reader-crosspost .transmissions-cross a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.reader-crosspost .transmissions-cross a:hover {
+  text-decoration: underline;
+}
+
+.reader-encoding {
+  font-family: var(--mono, "Source Code Pro", ui-monospace, monospace);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  line-height: 1.45;
+}
+
+pre.transmission {
+  margin: 0;
+  padding: 1rem;
+  white-space: pre-wrap;
+  font-size: 12pt;
+  line-height: 1.45;
+  border: 1px solid rgba(232, 238, 244, 0.1);
+  background: rgba(12, 16, 24, 0.6);
+}
+
+.err {
+  color: #ffb4c8;
+}
+
+.carousel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.carousel img {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  display: block;
+  border: 1px solid rgba(232, 238, 244, 0.12);
+}
+
+.back {
+  margin-top: 2rem;
+  font-size: 0.85rem;
+}
+
+.back a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.back a:hover {
+  text-decoration: underline;
+}

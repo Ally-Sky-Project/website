@@ -1,4 +1,4 @@
-/** QHTTP beacon — grain, character corruption, random horizontal tears. */
+/** NTQTP beacon — grain, character corruption, random horizontal tears. */
 
 const GLITCH_CHARS = "█▓▒░¿@#%&*~\\/|<>⌐¬½¼";
 

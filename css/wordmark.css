@@ -1,0 +1,126 @@
+/* Ally Sky Project — uniform slice: top half shifted right (CSS reconstruction). */
+
+:root {
+  --site-nav-wordmark-size: 0.9375rem;
+  --wordmark-slice: 52%;
+  --wordmark-shift: 0.11em;
+  --wordmark-ink: #e8eef4;
+}
+
+/* Site chrome wordmark (fixed size on every page). */
+.site-nav__brand .wordmark--site-nav {
+  display: block;
+  color: var(--wordmark-ink);
+  font-family: "Source Code Pro", ui-monospace, monospace;
+  font-size: var(--site-nav-wordmark-size);
+  font-style: italic;
+  font-weight: 800;
+  font-synthesis: none;
+  letter-spacing: -0.06em;
+  line-height: 1.05;
+  filter: none;
+  mix-blend-mode: normal;
+  -webkit-font-smoothing: antialiased;
+}
+
+.site-nav__brand .wordmark--site-nav .wordmark__line {
+  overflow: hidden;
+  padding-right: calc(var(--wordmark-shift) + 0.05em);
+}
+
+.site-nav__brand .wordmark--site-nav .wordmark__layer {
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+.site-brand .wordmark {
+  --wordmark-slice: 52%;
+  --wordmark-shift: 0.11em;
+  --wordmark-ink: #e8eef4;
+  --wordmark-sub-scale: 0.54;
+
+  color: var(--wordmark-ink);
+  font-family: "Source Code Pro", ui-monospace, monospace;
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  line-height: 1.05;
+  filter: none;
+  mix-blend-mode: normal;
+}
+
+.slide-brand .wordmark {
+  --wordmark-slice: 52%;
+  --wordmark-shift: 0.11em;
+  --wordmark-ink: #e8eef4;
+  --wordmark-sub-scale: 0.54;
+
+  color: var(--wordmark-ink);
+  font-family: "Source Code Pro", ui-monospace, monospace;
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  line-height: 1.05;
+  filter: none;
+  mix-blend-mode: normal;
+}
+
+.wordmark__line {
+  position: relative;
+  display: block;
+}
+
+.wordmark__line--sub {
+  font-size: calc(1em * var(--wordmark-sub-scale));
+  margin-top: 0.1em;
+}
+
+.wordmark__layer {
+  display: block;
+  white-space: nowrap;
+}
+
+.wordmark__layer--bottom {
+  clip-path: inset(var(--wordmark-slice) 0 0 0);
+}
+
+.wordmark__layer--top {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  clip-path: inset(0 0 calc(100% - var(--wordmark-slice)) 0);
+  transform: translateX(var(--wordmark-shift));
+}
+
+.site-brand .wordmark--horizontal {
+  font-size: clamp(1.05rem, 3.2vw, 1.65rem);
+  max-width: 100%;
+}
+
+.site-brand .wordmark__line,
+.site-brand--reader .wordmark__line {
+  overflow: hidden;
+  padding-right: calc(var(--wordmark-shift) + 0.05em);
+}
+
+.wordmark--stacked {
+  font-size: 1.65rem;
+}
+
+.site-brand--reader .wordmark--stacked {
+  font-size: 1.35rem;
+}
+
+.site-brand--reader .wordmark--horizontal {
+  font-size: clamp(0.95rem, 3vw, 1.35rem);
+  max-width: 100%;
+}
+
+.slide-brand .wordmark--stacked {
+  font-size: var(--wordmark-size, 1.65rem);
+}
+
+.slide-brand .wordmark--horizontal {
+  font-size: var(--wordmark-size, 1.35rem);
+}

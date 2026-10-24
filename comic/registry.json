@@ -20,7 +20,11 @@
         "/comic/assets/did-we-just-launch/06.png",
         "/comic/assets/did-we-just-launch/07.png",
         "/comic/assets/did-we-just-launch/08.png"
-      ]
+      ],
+      "crosspost": {
+        "tiktok_photo": "https://www.tiktok.com/@allyskyproject/photo/7700137378836483359",
+        "tiktok_video": "https://www.tiktok.com/@allyskyproject/video/7700132980378979614"
+      }
     }
   ]
 }

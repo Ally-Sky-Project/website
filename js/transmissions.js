@@ -10,6 +10,8 @@ export const CROSSPOST_LABELS = {
   instagram: "Instagram",
   youtube: "YouTube",
   tiktok: "TikTok",
+  tiktok_photo: "TikTok · photos",
+  tiktok_video: "TikTok · video",
   github: "GitHub",
 };
 

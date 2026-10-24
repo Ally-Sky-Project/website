@@ -27,6 +27,8 @@ Optional per-release field:
   "instagram": "https://…",
   "youtube": "https://…",
   "tiktok": "https://…",
+  "tiktok_photo": "https://…",
+  "tiktok_video": "https://…",
   "github": "https://…"
 }
 ```

@@ -1,5 +1,9 @@
 /** Noise-Tolerant Quantum Transport Protocol — payload / redundancy telemetry. */
 
+export const NTQTP_VERSION = "1.7.0b";
+
+export const NTQTP_BEACON_SEED = `ntqtp-beacon-${NTQTP_VERSION}`;
+
 /**
  * @param {string} seed
  */
@@ -82,7 +86,7 @@ export function deckTelemetryLines(deck) {
  * Beacon channel noise / error tolerance (seeded, stable per build).
  * @param {string} [seed]
  */
-export function beaconChannelTelemetry(seed = "ntqtp-beacon-1.6.1b") {
+export function beaconChannelTelemetry(seed = NTQTP_BEACON_SEED) {
   const { h1, h2 } = hashSeed(seed);
   const rho = redundancyFactorFromSeed(seed);
   const qberExponent = 3 + (h1 % 3);

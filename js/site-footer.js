@@ -8,6 +8,7 @@ export function renderSiteFooter(opts = {}) {
     `<a class="site-footer__link" href="/legal/privacy.html">Privacy transmission</a>`,
   ];
   if (!minimal) {
+    parts.push(`<a class="site-footer__link" href="/transmissions/feed/">RSS syndication</a>`);
     parts.push(`<a class="site-footer__link" href="/LICENSE">Site (MIT)</a>`);
   }
   parts.push(`<span class="site-footer__copy">© 2026 Ally Sky Project</span>`);

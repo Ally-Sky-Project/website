@@ -18,18 +18,6 @@ Push to `main` → GitHub Actions → Pages. Custom domain: GitHub Pages setting
 
 Data comes from `comic/registry.json`. The page shows **one row per story** (latest `published_at` per `gscript` / `deck`); older IDs remain valid at `/{id}/`.
 
-### RSS (Atom)
-
-**URL:** `/feed.xml` — syndication for new transmissions (one entry per story, same dedupe as the registry).
-
-Regenerate after registry changes:
-
-```bash
-node scripts/build-rss.mjs
-```
-
-GitHub Pages deploy runs this automatically. Optional: `SITE_URL=https://allyskyproject.com node scripts/build-rss.mjs` for local builds.
-
 Per-release fields include `reality_layer`, `reconstruction`, `frame_count`, and `payload_bytes` (NTQTP **message** size — same `deckPayloadByteLength` as the composer title slide, not PNG file size). Set on `npm run release` from the compiled deck.
 
 Optional per-release field:

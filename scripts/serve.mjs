@@ -18,8 +18,6 @@ const MIME = {
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
   ".svg": "image/svg+xml",
-  ".xml": "application/atom+xml; charset=utf-8",
-  ".xsl": "application/xml; charset=utf-8",
 };
 
 const ID_RE = /^\/[a-f0-9]{16}\d+\/?$/i;
@@ -62,14 +60,6 @@ const server = http.createServer((req, res) => {
   }
 
   if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-    if (urlPath === "/feed.xml" || urlPath.endsWith("/feed.xml")) {
-      res.writeHead(200, {
-        "Content-Type": "application/xml; charset=utf-8",
-        "Cache-Control": "no-cache",
-      });
-      res.end(fs.readFileSync(filePath));
-      return;
-    }
     sendFile(res, filePath);
     return;
   }

@@ -1,6 +1,18 @@
 {
   "releases": [
     {
+      "id": "6e4120a0cbc231141",
+      "title": "Transmission // 05 GLITCH ANALYSIS",
+      "version": 1,
+      "deck": "comic/slides/decks/transmission-05-glitch-analysis.slides.json",
+      "gscript": "comic/slides/stories/transmission-05-glitch-analysis.gscript",
+      "published_at": "2026-10-26T04:35:21.489Z",
+      "reality_layer": "description",
+      "reconstruction": "ai_frame_stack",
+      "frame_count": 10,
+      "payload_bytes": 1059
+    },
+    {
       "id": "ad5ba57c25217bfe1",
       "title": "Did we just launch?",
       "version": 1,
@@ -25,6 +37,42 @@
         "tiktok_photo": "https://www.tiktok.com/@allyskyproject/photo/7700137378836483359",
         "tiktok_video": "https://www.tiktok.com/@allyskyproject/video/7700132980378979614"
       }
+    },
+    {
+      "id": "afe3bc1dfa0548ac1",
+      "title": "Transmission // 05 GLITCH ANALYSIS",
+      "version": 1,
+      "deck": "comic/slides/decks/transmission-05-glitch-analysis.slides.json",
+      "gscript": "comic/slides/stories/transmission-05-glitch-analysis.gscript",
+      "published_at": "2026-10-26T06:19:58.717Z",
+      "reality_layer": "description",
+      "reconstruction": "ai_frame_stack",
+      "frame_count": 10,
+      "payload_bytes": 1031,
+      "carousel": [
+        "/comic/assets/transmission-05-glitch-analysis/01.png",
+        "/comic/assets/transmission-05-glitch-analysis/02.png",
+        "/comic/assets/transmission-05-glitch-analysis/03.png",
+        "/comic/assets/transmission-05-glitch-analysis/04.png",
+        "/comic/assets/transmission-05-glitch-analysis/05.png",
+        "/comic/assets/transmission-05-glitch-analysis/06.png",
+        "/comic/assets/transmission-05-glitch-analysis/07.png",
+        "/comic/assets/transmission-05-glitch-analysis/08.png",
+        "/comic/assets/transmission-05-glitch-analysis/09.png",
+        "/comic/assets/transmission-05-glitch-analysis/10.png"
+      ]
+    },
+    {
+      "id": "de35997871aefd5a1",
+      "title": "Transmission // 05 GLITCH ANALYSIS",
+      "version": 1,
+      "deck": "comic/slides/decks/transmission-05-glitch-analysis.slides.json",
+      "gscript": "comic/slides/stories/transmission-05-glitch-analysis.gscript",
+      "published_at": "2026-10-26T04:29:41.808Z",
+      "reality_layer": "description",
+      "reconstruction": "ai_frame_stack",
+      "frame_count": 10,
+      "payload_bytes": 990
     }
   ]
 }

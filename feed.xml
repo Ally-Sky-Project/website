@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="/feed.xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Ally Sky Project — NTQTP transmissions</title>
+  <link href="https://allyskyproject.com/transmissions/" rel="alternate" type="text/html"/>
+  <link href="https://allyskyproject.com/feed.xml" rel="self" type="application/atom+xml"/>
+  <id>https://allyskyproject.com/transmissions/</id>
+  <updated>2026-10-26T06:19:58.717Z</updated>
+  <subtitle>Human-written transmissions over NTQTP — official publication IDs on the beacon.</subtitle>
+  <author>
+    <name>Ally Sky Project</name>
+  </author>
+  <entry>
+    <title>Transmission // 05 GLITCH ANALYSIS</title>
+    <link href="https://allyskyproject.com/afe3bc1dfa0548ac1/" rel="alternate" type="text/html"/>
+    <id>https://allyskyproject.com/afe3bc1dfa0548ac1/</id>
+    <published>2026-10-26T06:19:58.717Z</published>
+    <updated>2026-10-26T06:19:58.717Z</updated>
+    <summary type="text">REALITY LAYER: DESCRIPTION-LOCKED · RECONSTRUCTION: AI · FRAME STACK · 10 frames · payload 1.0 KiB · ID afe3bc1dfa0548ac1</summary>
+  </entry>
+  <entry>
+    <title>Did we just launch?</title>
+    <link href="https://allyskyproject.com/ad5ba57c25217bfe1/" rel="alternate" type="text/html"/>
+    <id>https://allyskyproject.com/ad5ba57c25217bfe1/</id>
+    <published>2026-10-24T05:59:07.456Z</published>
+    <updated>2026-10-24T05:59:07.456Z</updated>
+    <summary type="text">REALITY LAYER: DESCRIPTION-LOCKED · RECONSTRUCTION: AI · FRAME STACK · 8 frames · payload 523 B · ID ad5ba57c25217bfe1</summary>
+  </entry>
+</feed>

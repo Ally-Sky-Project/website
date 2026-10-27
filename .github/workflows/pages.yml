@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build Atom feed
         run: node scripts/build-rss.mjs
-      - name: Build transmission slot redirects
+      - name: Build transmission slot routes
         run: node scripts/build-slot-routes.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

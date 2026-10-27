@@ -4,7 +4,7 @@ import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { idForSlot, loadRegistry } from "./transmission-slots.mjs";
+import { loadRegistry, slotForId } from "./transmission-slots.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -42,25 +42,16 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  if (SLOT_RE.test(urlPath)) {
-    const slot = Number(urlPath.replace(/\//g, ""));
-    const id = idForSlot(loadRegistry(), slot);
-    if (id) {
-      res.writeHead(302, { Location: `/${id}/` });
+  if (ID_RE.test(urlPath)) {
+    const id = urlPath.replace(/\//g, "").toLowerCase();
+    const slot = slotForId(loadRegistry(), id);
+    if (slot) {
+      res.writeHead(302, { Location: `/${slot}/` });
       res.end();
       return;
     }
-    res.writeHead(404);
-    res.end("Unknown transmission slot");
-    return;
-  }
-
-  if (ID_RE.test(urlPath)) {
-    const id = urlPath.replace(/\//g, "").toLowerCase();
     const perId = path.join(ROOT, id, "index.html");
-    const fallback = path.join(ROOT, "comic", "id-page.html");
     if (fs.existsSync(perId)) sendFile(res, perId);
-    else if (fs.existsSync(fallback)) sendFile(res, fallback);
     else {
       res.writeHead(404);
       res.end("Comic page missing");
@@ -92,5 +83,5 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, "127.0.0.1", () => {
   console.log(`Website: http://127.0.0.1:${PORT}/`);
-  console.log(`Comic example: http://127.0.0.1:${PORT}/ad5ba57c25217bfe1`);
+  console.log(`Comic example: http://127.0.0.1:${PORT}/1/`);
 });

@@ -3,7 +3,7 @@ import {
   formatMessagePayload,
   renderEncodingLinesHtml,
 } from "./encoding.js";
-import { releasesWithSlots } from "./transmission-slots.js";
+import { hrefForRelease, releasesWithSlots } from "./transmission-slots.js";
 
 const REGISTRY_URL = "/comic/registry.json";
 
@@ -128,7 +128,7 @@ export async function mountTransmissionsRegistry(root) {
     .map((r) => {
       const subject = escapeHtml(r.title || "Untitled");
       const id = escapeHtml(r.id || "");
-      const href = `/${id}/`;
+      const href = hrefForRelease(r);
       const date = escapeHtml(formatTransmissionDate(r.published_at));
       const encoding = renderEncodingLinesHtml(r, "transmission-card__encoding");
       const frames = escapeHtml(formatFrameCount(r));

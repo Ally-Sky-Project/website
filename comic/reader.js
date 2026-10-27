@@ -5,6 +5,7 @@ import {
   hasCrosspostLinks,
   renderCrosspostLinks,
 } from "/js/transmissions.js";
+import { hrefForRelease, idForSlotFromReleases } from "/js/transmission-slots.js";
 
 const REGISTRY_URL = "/comic/registry.json";
 const FRAME_MODE_KEY = "ally-reader-frame-mode";
@@ -80,17 +81,29 @@ function initHashVerifyCopy(root) {
 /**
  * @returns {string | null}
  */
-export function resolveComicId() {
+/**
+ * @returns {{ type: "id", id: string } | { type: "slot", slot: number } | null}
+ */
+export function resolveComicRoute() {
   const params = new URLSearchParams(location.search);
-  if (params.get("id")) return params.get("id").trim().toLowerCase();
+  if (params.get("id")) {
+    return { type: "id", id: params.get("id").trim().toLowerCase() };
+  }
 
   let path = location.pathname.replace(/\/$/, "");
   if (path.startsWith("/")) path = path.slice(1);
-  // Single segment: /ad5ba57c25217bfe1
-  if (/^[a-f0-9]{16}\d+$/i.test(path)) return path.toLowerCase();
+  if (/^\d+$/.test(path)) return { type: "slot", slot: parseInt(path, 10) };
+  if (/^[a-f0-9]{16}\d+$/i.test(path)) return { type: "id", id: path.toLowerCase() };
   const leaf = path.split("/").pop() || "";
-  if (/^[a-f0-9]{16}\d+$/i.test(leaf)) return leaf.toLowerCase();
+  if (/^[a-f0-9]{16}\d+$/i.test(leaf)) return { type: "id", id: leaf.toLowerCase() };
   return null;
+}
+
+/** @deprecated Use resolveComicRoute + registry lookup */
+export function resolveComicId() {
+  const route = resolveComicRoute();
+  if (!route || route.type !== "id") return null;
+  return route.id;
 }
 
 export function parseComicId(id) {
@@ -111,10 +124,10 @@ function renderTransmissionNav(adj) {
   if (!adj.prev && !adj.next) return "";
 
   const prevBtn = adj.prev
-    ? `<a class="reader-tx-nav__btn" href="/${escapeHtml(adj.prev.id)}/" rel="prev" aria-label="Earlier story">← Earlier</a>`
+    ? `<a class="reader-tx-nav__btn" href="${escapeHtml(hrefForRelease(adj.prev))}" rel="prev" aria-label="Earlier story">← Earlier</a>`
     : `<span class="reader-tx-nav__btn is-disabled" aria-disabled="true">← Earlier</span>`;
   const nextBtn = adj.next
-    ? `<a class="reader-tx-nav__btn" href="/${escapeHtml(adj.next.id)}/" rel="next" aria-label="Later story">Later →</a>`
+    ? `<a class="reader-tx-nav__btn" href="${escapeHtml(hrefForRelease(adj.next))}" rel="next" aria-label="Later story">Later →</a>`
     : `<span class="reader-tx-nav__btn is-disabled" aria-disabled="true">Later →</span>`;
 
   const hint = [];
@@ -247,17 +260,17 @@ function initFramesSection(app, carousel, adj) {
         e.preventDefault();
         goSlide(slideIdx + 1);
       } else if (e.key === "[" && adj.prev) {
-        location.assign(`/${adj.prev.id}/`);
+        location.assign(hrefForRelease(adj.prev));
       } else if (e.key === "]" && adj.next) {
-        location.assign(`/${adj.next.id}/`);
+        location.assign(hrefForRelease(adj.next));
       }
       return;
     }
 
     if (e.key === "ArrowLeft" && adj.prev) {
-      location.assign(`/${adj.prev.id}/`);
+      location.assign(hrefForRelease(adj.prev));
     } else if (e.key === "ArrowRight" && adj.next) {
-      location.assign(`/${adj.next.id}/`);
+      location.assign(hrefForRelease(adj.next));
     }
   });
 
@@ -268,16 +281,10 @@ function initFramesSection(app, carousel, adj) {
  * @param {HTMLElement} app
  */
 export async function mountComicReader(app) {
-  const id = resolveComicId();
+  const route = resolveComicRoute();
 
-  if (!id) {
-    app.innerHTML = `<p class="err">Missing publication ID. Open <code>/{id}</code> (example: <code>/ad5ba57c25217bfe1</code>).</p>`;
-    return;
-  }
-
-  const parts = parseComicId(id);
-  if (!parts) {
-    app.innerHTML = `<p class="err">Invalid ID format: <code>${id}</code></p>`;
+  if (!route) {
+    app.innerHTML = `<p class="err">Missing transmission. Open a slot URL (example: <code>/1/</code>).</p>`;
     return;
   }
 
@@ -287,6 +294,23 @@ export async function mountComicReader(app) {
     registry = await res.json();
   } catch {
     app.innerHTML = `<p class="err">Could not load registry.</p>`;
+    return;
+  }
+
+  let id;
+  if (route.type === "slot") {
+    id = idForSlotFromReleases(registry.releases, route.slot);
+    if (!id) {
+      app.innerHTML = `<p class="err">No transmission in slot <code>${route.slot}</code>.</p>`;
+      return;
+    }
+  } else {
+    id = route.id;
+  }
+
+  const parts = parseComicId(id);
+  if (!parts) {
+    app.innerHTML = `<p class="err">Invalid ID format: <code>${id}</code></p>`;
     return;
   }
 

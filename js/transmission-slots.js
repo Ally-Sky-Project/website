@@ -1,4 +1,4 @@
-/** Stable slot URLs: /1 → publication id (browser). */
+/** Canonical slot URLs: /1 /2 /3 … (browser). */
 
 export function storyKey(r) {
   return (r.gscript || r.deck || r.id || "").toLowerCase();
@@ -32,4 +32,11 @@ export function idForSlotFromReleases(releases, slot) {
 export function hrefForRelease(r) {
   if (r.slot > 0) return `/${r.slot}/`;
   return `/${r.id}/`;
+}
+
+export function slotForIdFromReleases(releases, id) {
+  const needle = String(id || "").toLowerCase();
+  if (!needle) return null;
+  const hit = (releases || []).find((r) => r.id?.toLowerCase() === needle);
+  return hit?.slot > 0 ? hit.slot : null;
 }

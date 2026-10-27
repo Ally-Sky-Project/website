@@ -7,6 +7,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { dedupeReleases } from "../js/transmissions.js";
+import { hrefForRelease } from "../js/transmission-slots.js";
 import { encodingLines, formatMessagePayload } from "../js/encoding.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -47,7 +48,7 @@ function buildAtom(registry) {
   const entries = rows
     .map((r) => {
       const id = r.id || "";
-      const link = `${SITE_URL}/${id}/`;
+      const link = `${SITE_URL}${hrefForRelease(r)}`;
       const title = r.title || "Untitled";
       const published = r.published_at || updated;
       const summary = itemSummary(r);

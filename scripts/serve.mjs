@@ -4,6 +4,7 @@ import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { idForSlot, loadRegistry } from "./transmission-slots.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -18,9 +19,11 @@ const MIME = {
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
   ".svg": "image/svg+xml",
+  ".xml": "application/atom+xml; charset=utf-8",
 };
 
 const ID_RE = /^\/[a-f0-9]{16}\d+\/?$/i;
+const SLOT_RE = /^\/\d+\/?$/;
 
 function sendFile(res, filePath, status = 200) {
   const ext = path.extname(filePath).toLowerCase();
@@ -36,6 +39,19 @@ const server = http.createServer((req, res) => {
 
   if (urlPath === "/" || urlPath === "") {
     sendFile(res, path.join(ROOT, "index.html"));
+    return;
+  }
+
+  if (SLOT_RE.test(urlPath)) {
+    const slot = Number(urlPath.replace(/\//g, ""));
+    const id = idForSlot(loadRegistry(), slot);
+    if (id) {
+      res.writeHead(302, { Location: `/${id}/` });
+      res.end();
+      return;
+    }
+    res.writeHead(404);
+    res.end("Unknown transmission slot");
     return;
   }
 

@@ -10,8 +10,11 @@ function randInt(min, max) {
   return min + ((Math.random() * (max - min + 1)) | 0);
 }
 
-/** @param {HTMLElement} el */
-function initGrain(el) {
+/**
+ * @param {HTMLElement} el
+ * @param {() => boolean} isActive
+ */
+function initGrain(el, isActive) {
   const canvas = document.createElement("canvas");
   canvas.className = "transmission-grain-canvas";
   el.appendChild(canvas);
@@ -32,6 +35,7 @@ function initGrain(el) {
   new ResizeObserver(resize).observe(el);
 
   const draw = () => {
+    if (!isActive()) return;
     const w = canvas.width;
     const h = canvas.height;
     const id = ctx.createImageData(w, h);
@@ -55,15 +59,35 @@ function initGrain(el) {
 /**
  * @param {HTMLElement} root
  * @param {{ reducedMotion?: boolean }} opts
+ * @returns {{ stabilize: () => void, resume: () => void, isStabilized: () => boolean } | null}
  */
 export function initBeaconGlitch(root, opts = {}) {
   const reduced = opts.reducedMotion ?? false;
   const tearLayer = root.querySelector(".transmission-tear");
   const main = root.querySelector(".transmission-main");
   const noiseEl = root.querySelector(".transmission-noise");
-  if (!main || !tearLayer) return;
+  if (!main || !tearLayer) return null;
 
-  if (noiseEl && !reduced) initGrain(noiseEl);
+  let stopped = reduced;
+  /** @type {number[]} */
+  const timers = [];
+
+  const isActive = () => !stopped && !root.classList.contains("is-stabilized");
+
+  const schedule = (fn, ms) => {
+    if (!isActive()) return;
+    const id = window.setTimeout(() => {
+      if (isActive()) fn();
+    }, ms);
+    timers.push(id);
+  };
+
+  const clearTimers = () => {
+    for (const id of timers) window.clearTimeout(id);
+    timers.length = 0;
+  };
+
+  if (noiseEl && !reduced) initGrain(noiseEl, isActive);
 
   /** @type {WeakMap<Text, string>} */
   const canonicalByNode = new WeakMap();
@@ -91,8 +115,6 @@ export function initBeaconGlitch(root, opts = {}) {
     tearLayer.innerHTML = main.innerHTML;
   };
   syncTear();
-
-  if (reduced) return;
 
   function restoreAll() {
     for (const node of collectTextNodes()) {
@@ -161,20 +183,20 @@ export function initBeaconGlitch(root, opts = {}) {
       const hold = rand(35, 220);
       endAt = Math.max(endAt, delay + hold);
 
-      window.setTimeout(() => {
+      schedule(() => {
         applyTearSlice(y, h, shift, chroma, opacity);
         if (Math.random() < 0.85) corruptOnce(randInt(1, 6));
-        if (Math.random() < 0.25) {
+        if (Math.random() < 0.25 && !root.hasAttribute("data-wordmark-glitch")) {
           main.style.transform = `translateX(${rand(-3, 3)}px)`;
-          window.setTimeout(() => {
+          schedule(() => {
             main.style.transform = "";
           }, hold * 0.6);
         }
-        window.setTimeout(clearTear, hold);
+        schedule(clearTear, hold);
       }, delay);
     }
 
-    window.setTimeout(() => {
+    schedule(() => {
       restoreAll();
     }, endAt + 20);
   }
@@ -186,7 +208,7 @@ export function initBeaconGlitch(root, opts = {}) {
     if (roll > 0.92 && Math.random() < 0.4) fireTear();
 
     const hold = rand(25, 280);
-    window.setTimeout(() => {
+    schedule(() => {
       restoreAll();
       scheduleGlitch();
     }, hold);
@@ -194,7 +216,7 @@ export function initBeaconGlitch(root, opts = {}) {
 
   function scheduleGlitch() {
     const wait = Math.random() < 0.12 ? rand(40, 120) : rand(80, 900);
-    window.setTimeout(tickGlitch, wait);
+    schedule(tickGlitch, wait);
   }
 
   function scheduleTear() {
@@ -204,16 +226,42 @@ export function initBeaconGlitch(root, opts = {}) {
         : Math.random() < 0.2
           ? rand(400, 1200)
           : rand(600, 4500);
-    window.setTimeout(() => {
+    schedule(() => {
       if (Math.random() < 0.15) {
-        window.setTimeout(fireTear, rand(50, 400));
+        schedule(fireTear, rand(50, 400));
       }
       fireTear();
       scheduleTear();
     }, wait);
   }
 
-  scheduleGlitch();
-  scheduleTear();
-  window.setTimeout(fireTear, rand(200, 800));
+  function stabilize() {
+    stopped = true;
+    clearTimers();
+    restoreAll();
+    clearTear();
+    main.style.transform = "";
+    root.classList.add("is-stabilized");
+  }
+
+  function resume() {
+    if (reduced) return;
+    stopped = false;
+    root.classList.remove("is-stabilized");
+    scheduleGlitch();
+    scheduleTear();
+    schedule(fireTear, rand(200, 800));
+  }
+
+  if (!reduced) {
+    scheduleGlitch();
+    scheduleTear();
+    schedule(fireTear, rand(200, 800));
+  }
+
+  return {
+    stabilize,
+    resume,
+    isStabilized: () => stopped || root.classList.contains("is-stabilized"),
+  };
 }

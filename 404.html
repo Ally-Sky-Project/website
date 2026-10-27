@@ -17,6 +17,40 @@
     <script>
       (function () {
         var path = location.pathname.replace(/^\/+|\/+$/g, "");
+        if (/^\d+$/.test(path)) {
+          fetch("/comic/registry.json")
+            .then(function (r) {
+              return r.ok ? r.json() : null;
+            })
+            .then(function (data) {
+              if (!data || !data.releases) {
+                location.replace("/");
+                return;
+              }
+              var slot = parseInt(path, 10);
+              var byStory = {};
+              data.releases.forEach(function (r) {
+                if (!r.slot || r.slot < 1) return;
+                var key = (r.gscript || r.deck || r.id || "").toLowerCase();
+                if (!key) return;
+                var prev = byStory[key];
+                if (!prev || r.slot >= prev.slot) byStory[key] = r;
+              });
+              var hit = Object.keys(byStory)
+                .map(function (k) {
+                  return byStory[k];
+                })
+                .find(function (r) {
+                  return r.slot === slot;
+                });
+              if (hit && hit.id) location.replace("/" + hit.id + "/");
+              else location.replace("/");
+            })
+            .catch(function () {
+              location.replace("/");
+            });
+          return;
+        }
         if (!/^[a-f0-9]{16}\d+$/i.test(path)) {
           location.replace("/");
         }

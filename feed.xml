@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Ally Sky Project Transmissions</title>
+  <link href="https://allyskyproject.com/transmissions/" rel="alternate" type="text/html"/>
+  <link href="https://allyskyproject.com/feed.xml" rel="self" type="application/atom+xml"/>
+  <id>https://allyskyproject.com/transmissions/</id>
+  <updated>2026-10-27T18:29:17.281Z</updated>
+  <subtitle>New NTQTP transmissions (one entry per story, latest publication ID).</subtitle>
+  <author>
+    <name>Ally Sky Project</name>
+  </author>
+  <entry>
+    <title>03 - Time Hallucination</title>
+    <link href="https://allyskyproject.com/517860c4eb757df51/" rel="alternate" type="text/html"/>
+    <id>https://allyskyproject.com/517860c4eb757df51/</id>
+    <published>2026-10-27T18:29:17.281Z</published>
+    <updated>2026-10-27T18:29:17.281Z</updated>
+    <summary type="text">REALITY LAYER: DESCRIPTION-LOCKED · RECONSTRUCTION: AI · FRAME STACK · 12 frames · payload 1.4 KiB · ID 517860c4eb757df51</summary>
+  </entry>
+  <entry>
+    <title>Transmission // 05 GLITCH ANALYSIS</title>
+    <link href="https://allyskyproject.com/afe3bc1dfa0548ac1/" rel="alternate" type="text/html"/>
+    <id>https://allyskyproject.com/afe3bc1dfa0548ac1/</id>
+    <published>2026-10-26T06:30:03.928Z</published>
+    <updated>2026-10-26T06:30:03.928Z</updated>
+    <summary type="text">REALITY LAYER: DESCRIPTION-LOCKED · RECONSTRUCTION: AI · FRAME STACK · 10 frames · payload 1.0 KiB · ID afe3bc1dfa0548ac1</summary>
+  </entry>
+  <entry>
+    <title>Did we just launch?</title>
+    <link href="https://allyskyproject.com/ad5ba57c25217bfe1/" rel="alternate" type="text/html"/>
+    <id>https://allyskyproject.com/ad5ba57c25217bfe1/</id>
+    <published>2026-10-24T05:59:07.456Z</published>
+    <updated>2026-10-24T05:59:07.456Z</updated>
+    <summary type="text">REALITY LAYER: DESCRIPTION-LOCKED · RECONSTRUCTION: AI · FRAME STACK · 8 frames · payload 523 B · ID ad5ba57c25217bfe1</summary>
+  </entry>
+</feed>

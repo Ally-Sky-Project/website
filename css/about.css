@@ -1,0 +1,146 @@
+.about-page {
+  --about-indent: 1.35rem;
+  max-width: 42rem;
+  margin: 0 0 2rem;
+}
+
+.about-page__title {
+  font-family: var(--mono, "Source Code Pro", ui-monospace, monospace);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--accent, #8ecae8);
+  margin: 0 0 1.25rem;
+  letter-spacing: 0.04em;
+}
+
+.about-page__lead {
+  margin: 0 0 1.75rem;
+  margin-left: var(--about-indent);
+  padding-left: 0.85rem;
+  border-left: 1px solid rgba(142, 202, 232, 0.22);
+  color: var(--ink, #e8eef4);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+.about-page h2 {
+  font-family: var(--mono, "Source Code Pro", ui-monospace, monospace);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent-dim, #5a9ab8);
+  margin: 2rem 0 0.75rem;
+}
+
+.about-page h2:first-of-type {
+  margin-top: 0;
+}
+
+.about-page section > p,
+.about-page section > ul {
+  margin-left: var(--about-indent);
+  padding-left: 0.85rem;
+  border-left: 1px solid rgba(232, 238, 244, 0.1);
+}
+
+.about-page p {
+  margin: 0 0 1rem;
+  color: var(--ink, #e8eef4);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.about-spoilers {
+  margin: 0 0 1.75rem;
+  margin-left: var(--about-indent);
+  border: 1px solid rgba(232, 238, 244, 0.12);
+  background: rgba(12, 16, 24, 0.45);
+}
+
+.about-spoilers__summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.65rem;
+  padding: 0.75rem 1rem;
+  font-family: var(--mono, "Source Code Pro", ui-monospace, monospace);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--ink, #e8eef4);
+  cursor: pointer;
+  list-style: none;
+}
+
+.about-spoilers__summary::-webkit-details-marker {
+  display: none;
+}
+
+.about-spoilers__summary::before {
+  content: "▸ ";
+  color: var(--accent-dim, #5a9ab8);
+}
+
+.about-spoilers[open] .about-spoilers__summary::before {
+  content: "▾ ";
+}
+
+.about-spoilers__summary:hover {
+  color: var(--accent, #8ecae8);
+}
+
+.about-spoilers__summary:focus-visible {
+  outline: 2px solid var(--accent, #8ecae8);
+  outline-offset: -2px;
+}
+
+.about-spoiler-tag {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--warn, #d9956a);
+  border: 1px solid rgba(217, 149, 106, 0.45);
+  padding: 0.1rem 0.35rem;
+}
+
+.about-spoilers__body {
+  padding: 0.75rem 1rem 1rem calc(0.85rem + var(--about-indent));
+  border-top: 1px solid rgba(232, 238, 244, 0.08);
+  border-left: 1px solid rgba(232, 238, 244, 0.08);
+  margin-left: 0.5rem;
+}
+
+.about-spoilers__body p:last-child {
+  margin-bottom: 0;
+}
+
+.about-colophon {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-colophon li {
+  margin: 0 0 1rem;
+  padding-left: 0.85rem;
+  border-left: 1px solid rgba(232, 238, 244, 0.08);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink, #e8eef4);
+}
+
+.about-colophon li:last-child {
+  margin-bottom: 0;
+}
+
+.about-colophon strong {
+  display: block;
+  font-family: var(--mono, "Source Code Pro", ui-monospace, monospace);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--muted, #7a8a9a);
+  margin-bottom: 0.25rem;
+}

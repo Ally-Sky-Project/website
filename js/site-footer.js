@@ -5,9 +5,13 @@
 export function renderSiteFooter(opts = {}) {
   const minimal = Boolean(opts.minimal);
   const parts = [
+    `<a class="site-footer__link" href="/about/">About</a>`,
     `<a class="site-footer__link" href="/legal/privacy.html">Privacy transmission</a>`,
   ];
   if (!minimal) {
+    parts.push(
+      `<a class="site-footer__link" href="/feed.xml">RSS</a>`,
+    );
     parts.push(`<a class="site-footer__link" href="/LICENSE">Site (MIT)</a>`);
   }
   parts.push(`<span class="site-footer__copy">© 2026 Ally Sky Project</span>`);

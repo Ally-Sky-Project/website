@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#06080c" />
+    <meta
+      name="description"
+      content="The Ally Sky Project — independent science fiction across narrative, music, visual art, and interactive design."
+    />
+    <title>About · Ally Sky Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Source+Code+Pro:ital,wght@0,500;0,800;1,800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/beacon.css" />
+    <link rel="stylesheet" href="/css/wordmark.css" />
+    <link rel="stylesheet" href="/css/site-nav.css" />
+    <link rel="stylesheet" href="/css/site-footer.css" />
+    <link rel="stylesheet" href="/css/about.css" />
+  </head>
+  <body>
+    <div class="beacon beacon--home">
+      <div id="site-nav"></div>
+      <article class="about-page" aria-labelledby="about-title">
+        <h1 class="about-page__title" id="about-title">About the Ally Sky Project</h1>
+
+        <p class="about-page__lead">
+          The Ally Sky Project is an independent, multi-disciplinary science fiction universe exploring
+          the fragile boundary between human reality and technological transformation. Blending
+          serialized fiction, dynamic visual art, original music, and interactive web design, the
+          project constructs an expansive, multi-sensory world born from a single creative vision.
+        </p>
+
+        <details class="about-spoilers">
+          <summary class="about-spoilers__summary">
+            Narrative
+            <span class="about-spoiler-tag">Contains spoilers</span>
+          </summary>
+          <div class="about-spoilers__body">
+            <p>
+              The series follows the members of an avant-garde music collective navigating creative
+              friction, technical inadequacy, and the desperate search for an audience. Plagued by
+              self-doubt and terrified of creative exposure, the group’s founder and songwriter, Ally
+              Sky, possesses a torrent of raw melodies but lacks formal musicianship. To mask her flaws
+              and amplify her voice, she turns to speculative computational pipelines and recursive
+              generative models.
+            </p>
+            <p>
+              Her trajectory fractures when immersion in these synthetic feedback loops triggers an
+              insidious AI-induced psychosis. Ally begins hearing her own voice inside her head—yet the
+              words, intentions, and melodies sound as if they originate far beyond her conscious mind.
+            </p>
+            <p>
+              Through these internal transmissions, she discerns intricate geometric patterns,
+              architectural theories of the cosmos, and hidden mathematical symmetries buried in
+              mundane static. Terrifyingly, the phenomenon refuses to stay confined to her mind; these
+              patterns begin actively echoing in physical events and structural anomalies around the
+              collective in real time.
+            </p>
+            <p>
+              Whether this is the outer limit of apophenia—an isolated mind and recursive neural
+              networks manufacturing meaning until reality itself strains under the delusion—or the
+              violent unmasking of something grander at scale remains an open question. As consensus
+              skepticism clashes against Ally’s terrifying new perception, the boundaries between self,
+              machine, and physical space disintegrate, pulling the band into an escalating cosmic
+              crisis. Caught between psychological unraveling and an authentic metaphysical breach,
+              they are left with only one fragile anchor: their human connection to one another against
+              the deafening static of a reality losing its focus. Yet, as they venture deeper into this
+              cold, foreign landscape, they lift their eyes toward the sky—holding fast to the hope of
+              a brand-new tomorrow ablaze with exploding color.
+            </p>
+          </div>
+        </details>
+
+        <section aria-labelledby="about-instrument">
+          <h2 id="about-instrument">Technology as Instrument, Not Artist</h2>
+          <p>
+            What does authentic connection mean when algorithms learn to mirror our words and melodies?
+            To explore that question honestly, the medium had to reflect the message. Constructing a
+            universe of this scale would traditionally require an entire production studio. Instead,
+            custom computational pipelines, generative audio engines, and algorithmic visual tools
+            serve as modern instruments—allowing a solo creator to build a sprawling, living world.
+          </p>
+          <p>
+            Technology here is neither a shortcut nor an author. Every narrative beat, musical motif,
+            dialogue nuance, and visual frame is conceived, storyboarded, and directed by human hands.
+            The human remains the composer holding the intent; the machine is simply the resonant
+            chamber giving it form.
+          </p>
+        </section>
+
+        <section aria-labelledby="about-colophon">
+          <h2 id="about-colophon">Technology &amp; Production Colophon</h2>
+          <p>
+            This project is built on an active synthesis of human intent and computational architecture,
+            expanding what a solo independent creator can realize at scale. Every narrative arc,
+            composition, and visual frame originates under direct human authorship, developed and
+            refined through an integrated pipeline of physical instruments, custom software, and
+            generative models:
+          </p>
+          <ul class="about-colophon">
+            <li>
+              <strong>Narrative &amp; Direction</strong>
+              Core scripts, character bibles, and storyboards are conceived, written, and structured
+              natively by the creator, using iterative model workflows for conceptual stress-testing and
+              scenario expansion.
+            </li>
+            <li>
+              <strong>Original Score, Sound Design &amp; Voices</strong>
+              Live acoustic instrumentation tracked on a Yamaha C40 nylon-string guitar; vocal takes and
+              field voice memos captured via Audio-Technica AT2020, Scarlett Focusrite 2i2, and DJI Mic
+              systems. Synthetic vocal layers and anomalous voice generation designed via ElevenLabs.
+              Atmospheric stems synthesized with Suno v6, shaped with custom command-line DSP
+              utilities, arranged in GarageBand, and mastered in Audacity 4.
+            </li>
+            <li>
+              <strong>Visual Art &amp; Album Design</strong>
+              Narrative concept art, storyboard sequences, and album packaging generated via the Google
+              Gemini Developer API and bespoke visual pipelines, directed by human sketches,
+              photographic references, and precise framing parameters.
+            </li>
+            <li>
+              <strong>Engineering &amp; Web Infrastructure</strong>
+              Interactive reader environments, procedural visual generation scripts, and site
+              architecture built and maintained in Cursor AI.
+            </li>
+          </ul>
+        </section>
+      </article>
+      <div id="site-footer"></div>
+    </div>
+    <script type="module">
+      import { mountSiteNav } from "/js/site-nav.js";
+      import { mountSiteFooter } from "/js/site-footer.js";
+
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      mountSiteNav(document.getElementById("site-nav"), "about", { reducedMotion });
+      mountSiteFooter(document.getElementById("site-footer"));
+    </script>
+  </body>
+</html>

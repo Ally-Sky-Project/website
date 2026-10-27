@@ -63,6 +63,10 @@ body {
   min-width: 0;
 }
 
+.beacon.beacon--home {
+  max-width: min(76rem, 100%);
+}
+
 .transmission-wrap {
   --tear-top: 40%;
   --tear-height: 4%;
@@ -215,12 +219,51 @@ body {
   animation: beacon-blink 1.4s step-end infinite;
 }
 
+/* NTQTP + logo: freeze when STABILIZE is on. */
+.transmission-wrap.is-stabilized .transmission-noise,
+.transmission-wrap.is-stabilized .transmission-tear {
+  display: none !important;
+}
+
+.transmission-wrap.is-stabilized .transmission-main,
+.transmission-wrap.is-stabilized.is-tearing .transmission-main {
+  animation: none !important;
+  transform: none !important;
+}
+
+.transmission-wrap.is-stabilized .transmission .blink {
+  animation: none !important;
+}
+
+/* Hero wordmark: horizontal jitter only (fixed-height box; see wordmark.css). */
+.wordmark-hero-wrap.is-tearing .transmission-main.wordmark {
+  animation: wordmark-hero-jitter 0.06s steps(3) infinite;
+  will-change: transform;
+}
+
+@keyframes wordmark-hero-jitter {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  33% {
+    transform: translateX(2px);
+  }
+  66% {
+    transform: translateX(-2px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .transmission .blink {
     animation: none;
   }
 
   .transmission-wrap.is-tearing .transmission-main {
+    animation: none;
+  }
+
+  .wordmark-hero-wrap.is-tearing .transmission-main.wordmark {
     animation: none;
   }
 

@@ -124,3 +124,125 @@
 .slide-brand .wordmark--horizontal {
   font-size: var(--wordmark-size, 1.35rem);
 }
+
+/* Site nav glitch logo — NTQTP tear (wordmark-glitch.js + beacon-glitch.js). */
+:root {
+  --wordmark-nav-logo-size: clamp(1.35rem, 4.2vw, 2rem);
+  --wordmark-nav-line-h: calc(var(--wordmark-nav-logo-size) * 1.05);
+  --wordmark-nav-block-h: calc(var(--wordmark-nav-line-h) + 0.4rem);
+}
+
+.site-nav__brand {
+  height: var(--wordmark-nav-block-h);
+  max-height: var(--wordmark-nav-block-h);
+  overflow: hidden;
+}
+
+.site-nav__brand .wordmark-hero-wrap {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  height: var(--wordmark-nav-block-h);
+  max-height: var(--wordmark-nav-block-h);
+  font-size: var(--wordmark-nav-logo-size);
+  contain: layout style;
+  overflow: hidden;
+}
+
+.wordmark-hero-wrap {
+  max-width: 100%;
+  position: relative;
+}
+
+.wordmark-hero-zone {
+  position: relative;
+  height: var(--wordmark-nav-block-h);
+  min-height: var(--wordmark-nav-block-h);
+  max-height: var(--wordmark-nav-block-h);
+  overflow: hidden;
+}
+
+.wordmark-hero-wrap .transmission.wordmark {
+  margin: 0;
+  padding: 0.2rem 0;
+  max-width: 100%;
+  height: var(--wordmark-nav-block-h);
+  max-height: var(--wordmark-nav-block-h);
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  font-family: "Source Code Pro", ui-monospace, monospace;
+  font-style: italic;
+  font-weight: 800;
+  font-synthesis: none;
+  letter-spacing: -0.06em;
+  line-height: 1.05;
+  font-size: 1em;
+  color: var(--wordmark-ink, #e8eef4);
+  text-shadow:
+    1px 0 rgba(255, 90, 190, 0.32),
+    -1px 0 rgba(142, 202, 232, 0.32);
+}
+
+.wordmark-hero-wrap .transmission-tear.wordmark {
+  padding: 0.2rem 0;
+  height: var(--wordmark-nav-block-h);
+  max-height: var(--wordmark-nav-block-h);
+  box-sizing: border-box;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.wordmark-hero-wrap .wordmark__line {
+  overflow: hidden;
+  padding-right: calc(var(--wordmark-shift) + 0.05em);
+  height: var(--wordmark-nav-line-h);
+  min-height: var(--wordmark-nav-line-h);
+  max-height: var(--wordmark-nav-line-h);
+}
+
+.wordmark-hero-wrap .wordmark__layer {
+  white-space: nowrap;
+  height: var(--wordmark-nav-line-h);
+  max-height: var(--wordmark-nav-line-h);
+  overflow: hidden;
+  line-height: var(--wordmark-nav-line-h);
+}
+
+.wordmark-hero-wrap .transmission-main.wordmark {
+  animation: wordmark-hero-blink 6.5s step-end infinite;
+}
+
+@keyframes wordmark-hero-blink {
+  0%,
+  91%,
+  100% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 0.78;
+  }
+  94% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 0.88;
+  }
+}
+
+.wordmark-hero-wrap.is-stabilized .transmission-noise,
+.wordmark-hero-wrap.is-stabilized .transmission-tear {
+  display: none !important;
+}
+
+.wordmark-hero-wrap.is-stabilized .transmission-main.wordmark,
+.wordmark-hero-wrap.is-stabilized.is-tearing .transmission-main.wordmark {
+  animation: none !important;
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wordmark-hero-wrap .transmission-main.wordmark {
+    animation: none;
+  }
+}

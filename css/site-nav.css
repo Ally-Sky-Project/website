@@ -1,8 +1,8 @@
 .site-nav {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem 1.25rem;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.65rem 1.25rem;
   margin: 0 0 1.5rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid var(--line, rgba(232, 238, 244, 0.14));
@@ -10,14 +10,94 @@
   line-height: 1.5;
 }
 
+.site-nav__brand-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem 0.75rem;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--wordmark-nav-block-h, 2.5rem);
+}
+
 .site-nav__brand {
   display: block;
-  flex-shrink: 0;
-  max-width: 100%;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: calc(100% - 6rem);
   text-decoration: none;
   opacity: 0.92;
   transition: opacity 0.15s ease;
   line-height: 0;
+}
+
+.site-nav__meta {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.55rem 0.65rem;
+  margin-left: auto;
+}
+
+.site-nav__protocol {
+  font-family: var(--mono, "Source Code Pro", ui-monospace, monospace);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--muted, #7a8a9a);
+  white-space: nowrap;
+}
+
+.site-nav__github {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted, #7a8a9a);
+  text-decoration: none;
+  line-height: 0;
+  padding: 0.2rem;
+}
+
+.site-nav__github:hover {
+  color: var(--ink, #e8eef4);
+}
+
+.site-nav__github:focus-visible {
+  outline: 1px solid var(--accent, #8ecae8);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.site-nav__stabilize {
+  flex: 0 0 auto;
+  font-family: var(--mono, "Source Code Pro", ui-monospace, monospace);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-dim, #5a9ab8);
+  background: rgba(142, 202, 232, 0.08);
+  border: 1px solid rgba(142, 202, 232, 0.35);
+  padding: 0.35rem 0.55rem;
+  cursor: pointer;
+}
+
+.site-nav__stabilize:hover {
+  color: var(--ink, #e8eef4);
+  border-color: rgba(142, 202, 232, 0.55);
+  background: rgba(142, 202, 232, 0.14);
+}
+
+.site-nav__stabilize:focus-visible {
+  outline: 2px solid var(--accent, #8ecae8);
+  outline-offset: 2px;
+}
+
+.site-nav__stabilize[aria-pressed="true"] {
+  color: var(--ink, #e8eef4);
+  border-color: rgba(120, 200, 140, 0.5);
+  background: rgba(120, 200, 140, 0.12);
 }
 
 .site-nav__brand:hover {
@@ -34,6 +114,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  width: 100%;
   gap: 0.5rem 1.25rem;
   font-family: var(--mono, "Source Code Pro", ui-monospace, monospace);
   font-size: 0.8rem;

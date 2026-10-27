@@ -1,7 +1,35 @@
 {
   "releases": [
     {
+      "id": "517860c4eb757df51",
+      "slot": 3,
+      "title": "03 - Time Hallucination",
+      "version": 1,
+      "deck": "comic/slides/decks/03-time-hallucination.slides.json",
+      "gscript": "comic/slides/stories/03-time-hallucination.gscript",
+      "published_at": "2026-10-27T18:29:17.281Z",
+      "reality_layer": "description",
+      "reconstruction": "ai_frame_stack",
+      "frame_count": 12,
+      "payload_bytes": 1430,
+      "carousel": [
+        "/comic/assets/03-time-hallucination/01.png",
+        "/comic/assets/03-time-hallucination/02.png",
+        "/comic/assets/03-time-hallucination/03.png",
+        "/comic/assets/03-time-hallucination/04.png",
+        "/comic/assets/03-time-hallucination/05.png",
+        "/comic/assets/03-time-hallucination/06.png",
+        "/comic/assets/03-time-hallucination/07.png",
+        "/comic/assets/03-time-hallucination/08.png",
+        "/comic/assets/03-time-hallucination/09.png",
+        "/comic/assets/03-time-hallucination/10.png",
+        "/comic/assets/03-time-hallucination/11.png",
+        "/comic/assets/03-time-hallucination/12.png"
+      ]
+    },
+    {
       "id": "ad5ba57c25217bfe1",
+      "slot": 1,
       "title": "Did we just launch?",
       "version": 1,
       "deck": "comic/slides/decks/did-we-just-launch.slides.json",
@@ -22,12 +50,12 @@
         "/comic/assets/did-we-just-launch/08.png"
       ],
       "crosspost": {
-        "tiktok_photo": "https://www.tiktok.com/@allyskyproject/photo/7700137378836483359",
-        "tiktok_video": "https://www.tiktok.com/@allyskyproject/video/7700132980378979614"
+        "tiktok_photo": "https://www.tiktok.com/@allyskyproject/photo/7700137378836483359"
       }
     },
     {
       "id": "afe3bc1dfa0548ac1",
+      "slot": 2,
       "title": "Transmission // 05 GLITCH ANALYSIS",
       "version": 1,
       "deck": "comic/slides/decks/transmission-05-glitch-analysis.slides.json",

@@ -3,6 +3,7 @@ import {
   formatMessagePayload,
   renderEncodingLinesHtml,
 } from "./encoding.js";
+import { releasesWithSlots } from "./transmission-slots.js";
 
 const REGISTRY_URL = "/comic/registry.json";
 
@@ -11,7 +12,6 @@ export const CROSSPOST_LABELS = {
   youtube: "YouTube",
   tiktok: "TikTok",
   tiktok_photo: "TikTok · photos",
-  tiktok_video: "TikTok · video",
   github: "GitHub",
 };
 
@@ -27,9 +27,29 @@ export function hasCrosspostLinks(crosspost) {
 }
 
 /**
- * One row per story (latest publication by gscript/deck key).
+ * Stable slot order (/1, /2, …). Prev = lower slot · Next = higher slot.
  * @param {object[]} releases
+ * @param {string} currentId
  */
+export function adjacentReleases(releases, currentId) {
+  const rows = releasesWithSlots(releases || []);
+  const current = (releases || []).find((r) => r.id === currentId);
+  const slot = current?.slot;
+  if (!slot) {
+    return { prev: null, next: null, rows };
+  }
+  return {
+    prev: rows.find((r) => r.slot === slot - 1) ?? null,
+    next: rows.find((r) => r.slot === slot + 1) ?? null,
+    rows,
+  };
+}
+
+/** Homepage stack: one row per slotted story, newest slot first. */
+export function stackReleases(releases) {
+  return [...releasesWithSlots(releases || [])].sort((a, b) => b.slot - a.slot);
+}
+
 export function dedupeReleases(releases) {
   /** @type {Map<string, object>} */
   const byKey = new Map();

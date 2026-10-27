@@ -3,7 +3,7 @@
     {
       "id": "517860c4eb757df51",
       "slot": 3,
-      "title": "03 - Time Hallucination",
+      "title": "Time Hallucination",
       "version": 1,
       "deck": "comic/slides/decks/03-time-hallucination.slides.json",
       "gscript": "comic/slides/stories/03-time-hallucination.gscript",

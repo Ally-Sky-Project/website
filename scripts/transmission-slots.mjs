@@ -1,4 +1,4 @@
-/** Stable /1 /2 /3 … → publication id (Node). */
+/** Canonical slot URLs /1 /2 /3 … (Node). */
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -44,6 +44,17 @@ export function idForSlot(registry, slot) {
   if (!Number.isInteger(n) || n < 1) return null;
   const hit = releasesWithSlots(registry.releases || []).find((r) => r.slot === n);
   return hit?.id ?? null;
+}
+
+/**
+ * @param {object} registry
+ * @param {string} id
+ */
+export function slotForId(registry, id) {
+  const needle = String(id || "").toLowerCase();
+  if (!needle) return null;
+  const hit = (registry.releases || []).find((r) => r.id?.toLowerCase() === needle);
+  return hit?.slot > 0 ? hit.slot : null;
 }
 
 export function loadRegistry(filePath = REGISTRY_PATH) {

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Generate /1/index.html, /2/index.html, … → canonical /{id}/ */
+/** Canonical /1 /2 /3 … reader pages; /{publication-id}/ → slot redirect. */
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -7,9 +7,9 @@ import { loadRegistry, releasesWithSlots } from "./transmission-slots.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
+const ID_PAGE_TEMPLATE = path.join(ROOT, "comic/id-page.html");
 
-function slotIndexHtml(id) {
-  const url = `/${id}/`;
+function redirectIndexHtml(url) {
   return `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -27,6 +27,7 @@ function slotIndexHtml(id) {
 }
 
 function main() {
+  const readerHtml = fs.readFileSync(ID_PAGE_TEMPLATE, "utf-8");
   const registry = loadRegistry();
   const rows = releasesWithSlots(registry.releases || []);
 
@@ -38,10 +39,16 @@ function main() {
   }
 
   for (const r of rows) {
-    const dir = path.join(ROOT, String(r.slot));
-    fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(path.join(dir, "index.html"), slotIndexHtml(r.id));
-    console.log(`/${r.slot}/ → /${r.id}/`);
+    const slotUrl = `/${r.slot}/`;
+    const slotDir = path.join(ROOT, String(r.slot));
+    fs.mkdirSync(slotDir, { recursive: true });
+    fs.writeFileSync(path.join(slotDir, "index.html"), readerHtml);
+    console.log(`/${r.slot}/ reader (canonical)`);
+
+    const idDir = path.join(ROOT, r.id);
+    fs.mkdirSync(idDir, { recursive: true });
+    fs.writeFileSync(path.join(idDir, "index.html"), redirectIndexHtml(slotUrl));
+    console.log(`/${r.id}/ → ${slotUrl}`);
   }
 }
 

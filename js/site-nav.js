@@ -1,4 +1,5 @@
 import { NTQTP_VERSION } from "./ntqtp-telemetry.js";
+import { renderNavWordmarkHtml, wireStabilizeButton } from "./wordmark-glitch.js";
 
 const TABS = [
   { href: "/", label: "Beacon", id: "beacon" },
@@ -18,7 +19,7 @@ export function renderSiteNav(activeId) {
   });
   return `<nav class="site-nav" aria-label="Primary">
     <div class="site-nav__brand-row">
-      <a href="/" class="site-nav__brand" id="site-nav-brand" aria-label="Ally Sky Project home"></a>
+      <a href="/" class="site-nav__brand" id="site-nav-brand" aria-label="Ally Sky Project home">${renderNavWordmarkHtml()}</a>
       <div class="site-nav__meta">
         <button type="button" class="site-nav__stabilize" id="site-nav-stabilize" aria-pressed="false">
           STABILIZE
@@ -42,7 +43,7 @@ export function renderSiteNav(activeId) {
  * @param {string} activeId
  * @param {{ reducedMotion?: boolean }} [opts]
  */
-export function mountSiteNav(el, activeId, opts = {}) {
+export function mountSiteNav(el, activeId, _opts = {}) {
   if (!el) return;
   el.innerHTML = renderSiteNav(activeId);
 
@@ -55,10 +56,5 @@ export function mountSiteNav(el, activeId, opts = {}) {
     })
     .catch(() => {});
 
-  import("./wordmark-glitch.js").then(({ mountWordmarkGlitch, wireStabilizeButton }) => {
-    const brand = el.querySelector("#site-nav-brand");
-    const stabilizeBtn = el.querySelector("#site-nav-stabilize");
-    mountWordmarkGlitch(brand, { reducedMotion: opts.reducedMotion });
-    wireStabilizeButton(stabilizeBtn);
-  });
+  wireStabilizeButton(el.querySelector("#site-nav-stabilize"));
 }

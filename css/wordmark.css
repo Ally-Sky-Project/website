@@ -125,6 +125,47 @@
   font-size: var(--wordmark-size, 1.35rem);
 }
 
+/* Site nav — static slice wordmark (no JS glitch). */
+.wordmark-nav-static {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  height: var(--wordmark-nav-block-h);
+  max-height: var(--wordmark-nav-block-h);
+  font-size: var(--wordmark-nav-logo-size);
+  overflow: hidden;
+}
+
+.wordmark-nav-static .transmission.wordmark {
+  margin: 0;
+  padding: 0.2rem 0;
+  height: var(--wordmark-nav-block-h);
+  max-height: var(--wordmark-nav-block-h);
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  font-family: "Source Code Pro", ui-monospace, monospace;
+  font-style: italic;
+  font-weight: 800;
+  font-synthesis: none;
+  letter-spacing: -0.06em;
+  line-height: 1.05;
+  font-size: 1em;
+  color: var(--wordmark-ink, #e8eef4);
+  animation: none;
+  text-shadow:
+    1px 0 rgba(255, 90, 190, 0.32),
+    -1px 0 rgba(142, 202, 232, 0.32);
+}
+
+.wordmark-nav-static .wordmark__line {
+  overflow: hidden;
+  padding-right: calc(var(--wordmark-shift) + 0.05em);
+  height: var(--wordmark-nav-line-h);
+  min-height: var(--wordmark-nav-line-h);
+  max-height: var(--wordmark-nav-line-h);
+}
+
 /* Site nav glitch logo — NTQTP tear (wordmark-glitch.js + beacon-glitch.js). */
 :root {
   --wordmark-nav-logo-size: clamp(1.35rem, 4.2vw, 2rem);

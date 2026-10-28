@@ -20,10 +20,11 @@ const HASH_VERIFY_BY_GSCRIPT = {
 
 const COPY_ICON_SVG = `<svg class="reader-verify__copy-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
 
-function renderHashVerifyBlock(release) {
+function renderHashVerifyBlock(release, gateUntilLastFrame = false) {
   const spec = HASH_VERIFY_BY_GSCRIPT[release?.gscript || ""];
   if (!spec) return "";
-  return `<aside class="reader-verify" data-reader-verify aria-label="Hash verification">
+  const gated = gateUntilLastFrame ? " hidden data-reader-verify-gated" : "";
+  return `<aside class="reader-verify" data-reader-verify${gated} aria-label="Hash verification">
     <p class="reader-verify__lead">${escapeHtml(spec.lead)}</p>
     <div class="reader-verify__cmd-wrap">
       <pre class="reader-verify__cmd"><code>${escapeHtml(spec.command)}</code></pre>
@@ -163,16 +164,19 @@ function renderFramesSection(carousel) {
     </div>
     <div class="reader-frames__panel" data-panel="scroll">
       <div class="carousel">${scrollImgs}</div>
+      <p class="reader-scroll-top">
+        <a href="#reader-top" class="reader-scroll-top__link">↑ Back to top</a>
+      </p>
     </div>
     <div class="reader-frames__panel" data-panel="step" hidden>
       <div class="reader-step">
-        <div class="reader-step__toolbar">
-          <button type="button" class="reader-step__btn" data-slide-nav="prev" aria-label="Previous frame">← Prev</button>
-          <span class="reader-step__counter" data-slide-counter aria-live="polite">1 / ${n}</span>
-          <button type="button" class="reader-step__btn" data-slide-nav="next" aria-label="Next frame">Next →</button>
-        </div>
-        <div class="reader-step__frame">
-          <img class="reader-step__img" data-slide-img src="${first}" alt="" decoding="async" />
+        <p class="reader-step__counter" data-slide-counter aria-live="polite">1 / ${n}</p>
+        <div class="reader-step__stage">
+          <button type="button" class="reader-step__btn reader-step__btn--side" data-slide-nav="prev" aria-label="Previous frame">←</button>
+          <div class="reader-step__frame">
+            <img class="reader-step__img" data-slide-img src="${first}" alt="" decoding="async" />
+          </div>
+          <button type="button" class="reader-step__btn reader-step__btn--side" data-slide-nav="next" aria-label="Next frame">→</button>
         </div>
       </div>
     </div>
@@ -207,12 +211,29 @@ function initFramesSection(app, carousel, adj) {
   const btnPrev = root.querySelector('[data-slide-nav="prev"]');
   const btnNext = root.querySelector('[data-slide-nav="next"]');
 
+  const verifyGated = app.querySelector("[data-reader-verify-gated]");
+  let scrollLastFrameSeen = carousel.length <= 1;
+
+  function updateHashVerifyVisibility() {
+    if (!verifyGated) return;
+    let show = false;
+    if (carousel.length <= 1) {
+      show = true;
+    } else if (mode === "step") {
+      show = slideIdx >= carousel.length - 1;
+    } else {
+      show = scrollLastFrameSeen;
+    }
+    verifyGated.hidden = !show;
+  }
+
   function goSlide(nextIdx) {
     slideIdx = Math.max(0, Math.min(carousel.length - 1, nextIdx));
     if (img) img.src = carousel[slideIdx];
     if (counter) counter.textContent = `${slideIdx + 1} / ${carousel.length}`;
     if (btnPrev) btnPrev.disabled = slideIdx === 0;
     if (btnNext) btnNext.disabled = slideIdx === carousel.length - 1;
+    updateHashVerifyVisibility();
   }
 
   function setMode(next) {
@@ -231,6 +252,48 @@ function initFramesSection(app, carousel, adj) {
     panels.scroll.hidden = mode !== "scroll";
     panels.step.hidden = mode !== "step";
     if (mode === "step") goSlide(slideIdx);
+    else updateHashVerifyVisibility();
+    updateScrollTopFloat();
+  }
+
+  const scrollTopFloat = document.createElement("button");
+  scrollTopFloat.type = "button";
+  scrollTopFloat.className = "reader-scroll-top-float";
+  scrollTopFloat.textContent = "↑ Top";
+  scrollTopFloat.setAttribute("aria-label", "Back to top");
+  scrollTopFloat.hidden = true;
+  root.appendChild(scrollTopFloat);
+
+  function scrollToTop() {
+    const top = document.getElementById("reader-top");
+    if (top) top.scrollIntoView({ behavior: "smooth", block: "start" });
+    else window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function updateScrollTopFloat() {
+    const show = mode === "scroll" && window.scrollY > 280;
+    scrollTopFloat.hidden = !show;
+  }
+
+  root.querySelector(".reader-scroll-top__link")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    scrollToTop();
+  });
+  scrollTopFloat.addEventListener("click", scrollToTop);
+  window.addEventListener("scroll", updateScrollTopFloat, { passive: true });
+
+  const lastScrollFrame = panels.scroll?.querySelector(".carousel img:last-of-type");
+  if (lastScrollFrame && carousel.length > 1) {
+    const frameObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.target === lastScrollFrame) scrollLastFrameSeen = entry.isIntersecting;
+        }
+        updateHashVerifyVisibility();
+      },
+      { root: null, threshold: 0.4 },
+    );
+    frameObserver.observe(lastScrollFrame);
   }
 
   for (const tab of tabs) {
@@ -244,6 +307,7 @@ function initFramesSection(app, carousel, adj) {
   btnNext?.addEventListener("click", () => goSlide(slideIdx + 1));
   goSlide(0);
   setMode(mode);
+  updateHashVerifyVisibility();
 
   document.addEventListener("keydown", (e) => {
     if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return;
@@ -354,13 +418,13 @@ export async function mountComicReader(app) {
     ? `<p class="meta reader-crosspost">Cross-post ${renderCrosspostLinks(release.crosspost)}</p>`
     : "";
 
-  const hashVerifyBlock = renderHashVerifyBlock(release);
+  const hashVerifyBlock = renderHashVerifyBlock(release, carousel.length > 0);
 
   const adj = adjacentReleases(registry.releases, id);
   const transmissionNav = renderTransmissionNav(adj);
 
   app.innerHTML = `
-    <h1>${escapeHtml(release.title || "Untitled")}</h1>
+    <h1 id="reader-top">${escapeHtml(release.title || "Untitled")}</h1>
     ${transmissionNav}
     <p class="meta">
       ID <code>${id}</code><br />

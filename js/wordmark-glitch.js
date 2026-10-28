@@ -36,6 +36,16 @@ export function renderWordmarkGlitchHtml() {
   </span>`;
 }
 
+/** Site nav: CSS slice wordmark only (no tear/grain — avoids layout flash on load). */
+export function renderNavWordmarkHtml() {
+  const inner = wordmarkLine("Ally Sky Project");
+  return `<span class="wordmark-hero-wrap wordmark-nav-static" aria-hidden="true">
+    <span class="transmission transmission-main wordmark wordmark--horizontal wordmark--hero">
+      ${inner}
+    </span>
+  </span>`;
+}
+
 /**
  * @param {HTMLElement | null} host
  * @param {{ reducedMotion?: boolean }} [opts]
@@ -43,7 +53,9 @@ export function renderWordmarkGlitchHtml() {
  */
 export function mountWordmarkGlitch(host, opts = {}) {
   if (!host) return null;
-  host.innerHTML = renderWordmarkGlitchHtml();
+  if (!host.querySelector("[data-wordmark-glitch]")) {
+    host.innerHTML = renderWordmarkGlitchHtml();
+  }
   const wrap = host.querySelector("[data-wordmark-glitch]");
   if (!wrap) return null;
   const ctrl = initBeaconGlitch(wrap, { reducedMotion: opts.reducedMotion });

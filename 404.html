@@ -7,9 +7,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Source+Code+Pro:ital,wght@0,500;0,800;1,800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Source+Code+Pro:ital,wght@0,500;0,800;1,800&display=block"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="/css/beacon.css" />
     <link rel="stylesheet" href="/comic/reader.css" />
     <link rel="stylesheet" href="/css/wordmark.css" />
     <link rel="stylesheet" href="/css/site-nav.css" />
@@ -46,9 +47,9 @@
     </script>
   </head>
   <body>
-    <div class="wrap">
+    <div class="beacon beacon--home reader-beacon">
       <div id="site-nav"></div>
-      <div id="app">
+      <div id="app" class="reader-content">
         <p class="meta">Loading…</p>
       </div>
       <div id="site-footer"></div>

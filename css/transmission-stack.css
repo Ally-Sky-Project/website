@@ -1,5 +1,5 @@
 .beacon--home .transmission-wrap {
-  max-width: 44rem;
+  max-width: var(--site-column-max);
   margin-left: auto;
   margin-right: auto;
 }

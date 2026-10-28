@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Source+Code+Pro:ital,wght@0,500;0,800;1,800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Source+Code+Pro:ital,wght@0,500;0,800;1,800&display=block"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/css/beacon.css" />
@@ -20,10 +20,14 @@
     <link rel="stylesheet" href="/css/site-nav.css" />
     <link rel="stylesheet" href="/css/site-footer.css" />
     <link rel="stylesheet" href="/css/about.css" />
+    <link rel="modulepreload" href="/js/site-nav.js" />
+    <link rel="modulepreload" href="/js/wordmark-glitch.js" />
+    <link rel="modulepreload" href="/js/ntqtp-telemetry.js" />
   </head>
   <body>
     <div class="beacon beacon--home">
       <div id="site-nav"></div>
+      <div class="about-layout">
       <article class="about-page" aria-labelledby="about-title">
         <h1 class="about-page__title" id="about-title">About the Ally Sky Project</h1>
 
@@ -95,41 +99,58 @@
         <section aria-labelledby="about-colophon">
           <h2 id="about-colophon">Technology &amp; Production Colophon</h2>
           <p>
-            This project is built on an active synthesis of human intent and computational architecture,
-            expanding what a solo independent creator can realize at scale. Every narrative arc,
-            composition, and visual frame originates under direct human authorship, developed and
-            refined through an integrated pipeline of physical instruments, custom software, and
-            generative models:
+            Built with human hands and computational pipelines. The core production stack spans:
           </p>
           <ul class="about-colophon">
             <li>
-              <strong>Narrative &amp; Direction</strong>
-              Core scripts, character bibles, and storyboards are conceived, written, and structured
-              natively by the creator, using iterative model workflows for conceptual stress-testing and
-              scenario expansion.
+              <strong>Narrative &amp; Direction:</strong>
+              Core scripts, character bibles, and storyboards written natively by the creator, using
+              iterative model workflows for scenario expansion and dialogue stress-testing.
             </li>
             <li>
-              <strong>Original Score, Sound Design &amp; Voices</strong>
+              <strong>Original Score, Sound Design &amp; Voices:</strong>
               Live acoustic instrumentation tracked on a Yamaha C40 nylon-string guitar; vocal takes and
-              field voice memos captured via Audio-Technica AT2020, Scarlett Focusrite 2i2, and DJI Mic
+              field voice memos captured via Audio-Technica AT2020, Focusrite Scarlett 2i2, and DJI Mic
               systems. Synthetic vocal layers and anomalous voice generation designed via ElevenLabs.
               Atmospheric stems synthesized with Suno v6, shaped with custom command-line DSP
               utilities, arranged in GarageBand, and mastered in Audacity 4.
             </li>
             <li>
-              <strong>Visual Art &amp; Album Design</strong>
+              <strong>Visual Art &amp; Album Design:</strong>
               Narrative concept art, storyboard sequences, and album packaging generated via the Google
-              Gemini Developer API and bespoke visual pipelines, directed by human sketches,
-              photographic references, and precise framing parameters.
+              Gemini Developer API and bespoke visual pipelines, directed by original sketches,
+              photographic references, and framing parameters.
             </li>
             <li>
-              <strong>Engineering &amp; Web Infrastructure</strong>
+              <strong>Engineering &amp; Web Infrastructure:</strong>
               Interactive reader environments, procedural visual generation scripts, and site
               architecture built and maintained in Cursor AI.
             </li>
           </ul>
         </section>
       </article>
+      <aside class="about-visual" aria-label="Ally Sky Project artwork">
+        <div class="about-visual__frame">
+          <img
+            class="about-visual__art"
+            src="/about/ally_sky_9_27.png"
+            width="592"
+            height="1792"
+            alt="Ally Sky portrait artwork"
+            loading="lazy"
+            decoding="async"
+          />
+          <a class="about-visual__logo" href="/" aria-label="Ally Sky Project home">
+            <span class="about-visual__wordmark wordmark wordmark--horizontal" aria-hidden="true">
+              <span class="wordmark__line">
+                <span class="wordmark__layer wordmark__layer--bottom">Ally Sky Project</span>
+                <span class="wordmark__layer wordmark__layer--top">Ally Sky Project</span>
+              </span>
+            </span>
+          </a>
+        </div>
+      </aside>
+      </div>
       <div id="site-footer"></div>
     </div>
     <script type="module">

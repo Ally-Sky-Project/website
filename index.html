@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Ally Sky Engineering — Noise-Tolerant Quantum Transport Protocol (NTQTP) public beacon. Under construction."
+      content="Ally Sky Engineering — Noise-Tolerant Quantum Transport Protocol (NTQTP) public beacon. Phase I online; site expansion in progress."
     />
     <meta name="theme-color" content="#06080c" />
     <meta name="robots" content="index, follow" />
@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Source+Code+Pro:ital,wght@0,500;0,800;1,800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Source+Code+Pro:ital,wght@0,500;0,800;1,800&display=block"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/beacon.css" />
@@ -21,6 +21,9 @@
     <link rel="stylesheet" href="css/site-nav.css" />
     <link rel="stylesheet" href="css/site-footer.css" />
     <link rel="stylesheet" href="css/transmission-stack.css" />
+    <link rel="modulepreload" href="js/site-nav.js" />
+    <link rel="modulepreload" href="js/wordmark-glitch.js" />
+    <link rel="modulepreload" href="js/ntqtp-telemetry.js" />
   </head>
   <body>
     <div class="beacon beacon--home">
@@ -31,7 +34,7 @@
         aria-label="Transmission stack"
         hidden
       ></aside>
-      <div class="transmission-wrap" id="transmission-wrap">
+      <div class="transmission-wrap is-pending" id="transmission-wrap">
         <div class="transmission-noise" aria-hidden="true"></div>
         <div class="transmission-glitch-zone">
           <pre
@@ -66,6 +69,15 @@ BEACON TELEMETRY (NTQTP)
       import { mountTransmissionStack } from "./js/transmission-stack.js";
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+      function flushFrames() {
+        return new Promise((resolve) => {
+          requestAnimationFrame(() => requestAnimationFrame(resolve));
+        });
+      }
+
+      mountSiteNav(document.getElementById("site-nav"), "beacon", { reducedMotion });
+      mountSiteFooter(document.getElementById("site-footer"));
+
       const CODATA = {
         hbar: 1.054571817e-34,
         G: 6.6743e-11,
@@ -87,7 +99,7 @@ ALLY SKY ENGINEERING // QUANTUM TRANSPORT GROUP
 ${rule}
 
 NOISE-TOLERANT QUANTUM TRANSPORT PROTOCOL (NTQTP) ${version}
-STATUS: UNDER CONSTRUCTION
+STATUS: PHASE I ONLINE · EXPANSION IN PROGRESS
 
 PACKAGES ON THIS CHANNEL REQUIRE EXTREME REDUNDANCY (ρ ≥ 100)
 TO SURVIVE DECOHERENCE AND BIT-FLIP NOISE ACROSS PATHS.
@@ -123,12 +135,13 @@ ${rule}`;
 
       const { initBeaconGlitch } = await import("./js/beacon-glitch.js");
       const { registerGlitchTarget } = await import("./js/wordmark-glitch.js");
-      registerGlitchTarget(
-        initBeaconGlitch(document.getElementById("transmission-wrap"), { reducedMotion }),
-      );
+      const transmissionWrap = document.getElementById("transmission-wrap");
+      const beaconCtrl = initBeaconGlitch(transmissionWrap, { reducedMotion });
+      registerGlitchTarget(beaconCtrl);
 
-      mountSiteNav(document.getElementById("site-nav"), "beacon", { reducedMotion });
-      mountSiteFooter(document.getElementById("site-footer"));
+      await flushFrames();
+      transmissionWrap?.classList.remove("is-pending");
+
       mountTransmissionStack(document.getElementById("transmission-stack"));
 
       async function loadChannels() {

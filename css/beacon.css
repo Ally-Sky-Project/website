@@ -10,6 +10,10 @@
   --display: "Inter", system-ui, sans-serif;
   --mono: "Source Code Pro", ui-monospace, monospace;
   --beacon-transmission-size: 12pt;
+  /* ~1024px shell; inner columns scaled from prior 76rem / 44rem ratio */
+  --site-shell-max: 64rem;
+  --site-column-max: 37rem;
+  --site-prose-max: 35rem;
 }
 
 * {
@@ -56,7 +60,7 @@ body {
 }
 
 .beacon {
-  max-width: 44rem;
+  max-width: min(var(--site-shell-max), 100%);
   width: 100%;
   margin: 0 auto;
   padding: 2rem 1.25rem 3rem;
@@ -64,7 +68,12 @@ body {
 }
 
 .beacon.beacon--home {
-  max-width: min(76rem, 100%);
+  max-width: min(var(--site-shell-max), 100%);
+}
+
+.transmission-wrap.is-pending .transmission-glitch-zone,
+.transmission-wrap.is-pending .transmission-meta {
+  visibility: hidden;
 }
 
 .transmission-wrap {

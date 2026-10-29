@@ -11,16 +11,25 @@ function escapeHtml(s) {
     .replace(/"/g, "&quot;");
 }
 
+function stackReaderHref(release) {
+  const human = release.reconstruction_variants?.human;
+  if (human?.path) return human.path;
+  if (human && release.slot) return `/${release.slot}/human/`;
+  return hrefForRelease(release);
+}
+
 /**
+ * Slot 4 only: AI label + link to human reconstruction (avoids nested anchors in card link).
  * @param {object} release
  */
-/**
- * @param {object} release
- */
-function reconstructionFlair(release) {
+function reconstructionFlairHtml(release) {
+  const human = release.reconstruction_variants?.human;
+  if (human) {
+    return `<span class="transmission-stack__flair">RECONSTRUCTION: AI (Coming Soon) · HUMAN</span>`;
+  }
   const label = labelReconstruction(release.reconstruction);
   if (label === "—") return "";
-  return `RECONSTRUCTION: ${label}`;
+  return `<span class="transmission-stack__flair">${escapeHtml(`RECONSTRUCTION: ${label}`)}</span>`;
 }
 
 /**
@@ -29,8 +38,38 @@ function reconstructionFlair(release) {
 function coverUrl(release) {
   const carousel = release.carousel;
   if (Array.isArray(carousel) && carousel[0]) return carousel[0];
+  const humanCarousel = release.reconstruction_variants?.human?.carousel;
+  if (Array.isArray(humanCarousel) && humanCarousel[0]) return humanCarousel[0];
   if (typeof release.cover === "string" && release.cover) return release.cover;
   return null;
+}
+
+function stackItemHtml(r, i) {
+  const href = escapeHtml(stackReaderHref(r));
+  const title = escapeHtml(r.title || "Untitled");
+  const date = escapeHtml(formatTransmissionDate(r.published_at));
+  const flair = reconstructionFlairHtml(r);
+  const cover = coverUrl(r);
+  const latest = i === 0 ? " transmission-stack__item--latest" : "";
+  const badgeSlot =
+    i === 0
+      ? '<div class="transmission-stack__badge-slot"><span class="transmission-stack__badge" aria-label="Latest transmission">Latest</span></div>'
+      : '<div class="transmission-stack__badge-slot" aria-hidden="true"></div>';
+  const thumb = cover
+    ? `<span class="transmission-stack__frame"><img class="transmission-stack__cover" src="${escapeHtml(cover)}" alt="" width="9" height="16" loading="lazy" decoding="async" /></span>`
+    : `<span class="transmission-stack__frame transmission-stack__frame--empty" aria-hidden="true"></span>`;
+
+  return `<li class="transmission-stack__item${latest}">
+    ${badgeSlot}
+    <a class="transmission-stack__link" href="${href}">
+      ${thumb}
+      <span class="transmission-stack__meta">
+        ${flair}
+        <span class="transmission-stack__date">${date}</span>
+        <span class="transmission-stack__title">${title}</span>
+      </span>
+    </a>
+  </li>`;
 }
 
 /**
@@ -57,37 +96,7 @@ export async function mountTransmissionStack(root, opts = {}) {
     return;
   }
 
-  const items = rows
-    .map((r, i) => {
-      const href = escapeHtml(hrefForRelease(r));
-      const title = escapeHtml(r.title || "Untitled");
-      const date = escapeHtml(formatTransmissionDate(r.published_at));
-      const flairText = reconstructionFlair(r);
-      const flair = flairText
-        ? `<span class="transmission-stack__flair">${escapeHtml(flairText)}</span>`
-        : "";
-      const cover = coverUrl(r);
-      const latest = i === 0 ? " transmission-stack__item--latest" : "";
-      const badgeSlot =
-        i === 0
-          ? '<div class="transmission-stack__badge-slot"><span class="transmission-stack__badge" aria-label="Latest transmission">Latest</span></div>'
-          : '<div class="transmission-stack__badge-slot" aria-hidden="true"></div>';
-      const thumb = cover
-        ? `<span class="transmission-stack__frame"><img class="transmission-stack__cover" src="${escapeHtml(cover)}" alt="" width="9" height="16" loading="lazy" decoding="async" /></span>`
-        : `<span class="transmission-stack__frame transmission-stack__frame--empty" aria-hidden="true"></span>`;
-      return `<li class="transmission-stack__item${latest}">
-        ${badgeSlot}
-        <a class="transmission-stack__link" href="${href}">
-          ${thumb}
-          <span class="transmission-stack__meta">
-            ${flair}
-            <span class="transmission-stack__date">${date}</span>
-            <span class="transmission-stack__title">${title}</span>
-          </span>
-        </a>
-      </li>`;
-    })
-    .join("");
+  const items = rows.map((r, i) => stackItemHtml(r, i)).join("");
 
   root.innerHTML = `
     <header class="transmission-stack__header">

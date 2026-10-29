@@ -83,7 +83,7 @@ function initHashVerifyCopy(root) {
  * @returns {string | null}
  */
 /**
- * @returns {{ type: "id", id: string } | { type: "slot", slot: number } | null}
+ * @returns {{ type: "id", id: string } | { type: "slot", slot: number, variant?: string } | null}
  */
 export function resolveComicRoute() {
   const params = new URLSearchParams(location.search);
@@ -93,6 +93,10 @@ export function resolveComicRoute() {
 
   let path = location.pathname.replace(/\/$/, "");
   if (path.startsWith("/")) path = path.slice(1);
+  const humanSlot = path.match(/^(\d+)\/human$/);
+  if (humanSlot) {
+    return { type: "slot", slot: parseInt(humanSlot[1], 10), variant: "human" };
+  }
   if (/^\d+$/.test(path)) return { type: "slot", slot: parseInt(path, 10) };
   if (/^[a-f0-9]{16}\d+$/i.test(path)) return { type: "id", id: path.toLowerCase() };
   const leaf = path.split("/").pop() || "";
@@ -389,13 +393,28 @@ export async function mountComicReader(app) {
     return;
   }
 
-  document.title = `${release.title || "Comic"} · ${id}`;
+  let viewRelease = release;
+  let pageTitle = `${release.title || "Comic"} · ${id}`;
+  if (route.type === "slot" && route.variant === "human") {
+    const human = release.reconstruction_variants?.human;
+    if (!human?.carousel?.length) {
+      app.innerHTML = `<p class="err">No human reconstruction for slot <code>${route.slot}</code>.</p>`;
+      return;
+    }
+    viewRelease = {
+      ...release,
+      reconstruction: human.reconstruction || "human_frame_stack",
+      carousel: human.carousel,
+    };
+    pageTitle = `${release.title || "Comic"} (human) · ${id}`;
+  }
+  document.title = pageTitle;
 
   const published = release.published_at
     ? new Date(release.published_at).toISOString().slice(0, 10)
     : "—";
 
-  const carousel = carouselForReader(release.carousel);
+  const carousel = carouselForReader(viewRelease.carousel);
   let carouselHtml = "";
   if (carousel.length) {
     carouselHtml = renderFramesSection(carousel);
@@ -406,7 +425,7 @@ export async function mountComicReader(app) {
 > ID: ${id}</pre>`;
   }
 
-  const encodingBlock = renderEncodingMetaHtml(release);
+  const encodingBlock = renderEncodingMetaHtml(viewRelease);
   const frames = carousel.length ? String(carousel.length) : "—";
   const payload = formatMessagePayload(release);
   const metricsLine =

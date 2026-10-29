@@ -9,6 +9,7 @@ export const REALITY_LAYER_LABELS = {
 export const RECONSTRUCTION_LABELS = {
   ai_frame_stack: "AI · FRAME STACK",
   ai_waveform: "AI · WAVEFORM",
+  human_frame_stack: "HUMAN · FRAME STACK",
   direct: "DIRECT",
 };
 

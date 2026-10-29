@@ -80,6 +80,49 @@
       "crosspost": {
         "tiktok_photo": "https://www.tiktok.com/@allyskyproject/photo/7700862234074942750"
       }
+    },
+    {
+      "id": "0d48a9aac2c7a6621",
+      "slot": 4,
+      "title": "The Narrow Cosmic Alignment Window",
+      "version": 1,
+      "deck": "comic/slides/decks/the-narrow-cosmic-alignment-window-human.slides.json",
+      "gscript": "comic/slides/stories/the-narrow-cosmic-alignment-window-human.gscript",
+      "published_at": "2026-10-29T23:20:00.000Z",
+      "reality_layer": "description",
+      "reconstruction": "ai_frame_stack",
+      "frame_count": 19,
+      "payload_bytes": 2719,
+      "cover": "/comic/assets/the-narrow-cosmic-alignment-window-human/01.png",
+      "carousel": [],
+      "reconstruction_variants": {
+        "human": {
+          "label": "HUMAN",
+          "path": "/4/human/",
+          "reconstruction": "human_frame_stack",
+          "carousel": [
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/01.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/02.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/03.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/04.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/05.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/06.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/07.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/08.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/09.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/10.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/11.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/12.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/13.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/14.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/15.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/16.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/17.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/18.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-human/19.png"
+          ]
+        }
+      }
     }
   ]
 }

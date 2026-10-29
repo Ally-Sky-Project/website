@@ -45,6 +45,16 @@ function main() {
     fs.writeFileSync(path.join(slotDir, "index.html"), readerHtml);
     console.log(`/${r.slot}/ reader (canonical)`);
 
+    const human = r.reconstruction_variants?.human;
+    if (human?.path) {
+      const humanPath = human.path.replace(/\/$/, "");
+      const humanRel = humanPath.startsWith("/") ? humanPath.slice(1) : humanPath;
+      const humanDir = path.join(ROOT, ...humanRel.split("/"));
+      fs.mkdirSync(humanDir, { recursive: true });
+      fs.writeFileSync(path.join(humanDir, "index.html"), readerHtml);
+      console.log(`${human.path} reader (human reconstruction)`);
+    }
+
     const idDir = path.join(ROOT, r.id);
     fs.mkdirSync(idDir, { recursive: true });
     fs.writeFileSync(path.join(idDir, "index.html"), redirectIndexHtml(slotUrl));

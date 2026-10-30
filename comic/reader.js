@@ -95,7 +95,7 @@ export function resolveComicRoute() {
   if (path.startsWith("/")) path = path.slice(1);
   const legacyHuman = path.match(/^(\d+)\/human$/);
   if (legacyHuman) {
-    return { type: "slot", slot: parseInt(legacyHuman[1], 10), redirect: `/${legacyHuman[1]}/` };
+    return { type: "slot", slot: parseInt(legacyHuman[1], 10), variant: "human" };
   }
   const aiSlot = path.match(/^(\d+)\/ai$/);
   if (aiSlot) {
@@ -360,11 +360,6 @@ export async function mountComicReader(app) {
     return;
   }
 
-  if (route.redirect) {
-    location.replace(route.redirect);
-    return;
-  }
-
   let registry;
   try {
     const res = await fetch(REGISTRY_URL);
@@ -404,7 +399,18 @@ export async function mountComicReader(app) {
 
   let viewRelease = release;
   let pageTitle = `${release.title || "Comic"} · ${id}`;
-  if (route.type === "slot" && route.variant === "ai") {
+  if (route.type === "slot" && route.variant === "human") {
+    const human = release.reconstruction_variants?.human;
+    if (!human) {
+      app.innerHTML = `<p class="err">No human reconstruction for slot <code>${route.slot}</code>.</p>`;
+      return;
+    }
+    viewRelease = {
+      ...release,
+      reconstruction: human.reconstruction || release.reconstruction,
+      carousel: human.carousel?.length ? human.carousel : release.carousel,
+    };
+  } else if (route.type === "slot" && route.variant === "ai") {
     const ai = release.reconstruction_variants?.ai;
     if (!ai) {
       app.innerHTML = `<p class="err">No AI reconstruction for slot <code>${route.slot}</code>.</p>`;

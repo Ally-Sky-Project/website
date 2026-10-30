@@ -55,13 +55,6 @@ function main() {
       console.log(`${variant.path} reader (${variant.label || "variant"})`);
     }
 
-    if (r.slot === 4) {
-      const legacyHuman = path.join(ROOT, "4", "human");
-      fs.mkdirSync(legacyHuman, { recursive: true });
-      fs.writeFileSync(path.join(legacyHuman, "index.html"), redirectIndexHtml(slotUrl));
-      console.log(`/4/human/ → ${slotUrl}`);
-    }
-
     const idDir = path.join(ROOT, r.id);
     fs.mkdirSync(idDir, { recursive: true });
     fs.writeFileSync(path.join(idDir, "index.html"), redirectIndexHtml(slotUrl));

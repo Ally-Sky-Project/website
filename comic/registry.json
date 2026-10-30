@@ -116,6 +116,11 @@
         "/comic/assets/the-narrow-cosmic-alignment-window-human/19.png"
       ],
       "reconstruction_variants": {
+        "human": {
+          "label": "HUMAN",
+          "path": "/4/human/",
+          "reconstruction": "human_frame_stack"
+        },
         "ai": {
           "label": "AI",
           "path": "/4/ai/",

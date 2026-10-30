@@ -119,40 +119,49 @@
   flex: 0 0 auto;
 }
 
-.transmission-stack__item--latest .transmission-stack__link,
-.transmission-stack__item--latest .transmission-stack__card {
+.transmission-stack__item--latest .transmission-stack__link {
   border-color: rgba(142, 202, 232, 0.4);
   background: rgba(142, 202, 232, 0.07);
 }
 
-.transmission-stack__card {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-  width: 100%;
-  flex: 1 1 auto;
-  padding: 0.45rem;
-  border: 1px solid rgba(232, 238, 244, 0.1);
-  background: rgba(12, 16, 24, 0.45);
-  transition:
-    border-color 0.15s ease,
-    background 0.15s ease;
+.transmission-stack__link--shell {
+  cursor: default;
 }
 
-.transmission-stack__card:hover {
+.transmission-stack__link--shell:has(.transmission-stack__cover-link:hover),
+.transmission-stack__link--shell:has(.transmission-stack__body-link:hover) {
   border-color: rgba(142, 202, 232, 0.45);
   background: rgba(12, 16, 24, 0.7);
 }
 
-.transmission-stack__link--primary {
-  padding: 0;
-  border: none;
-  background: transparent;
+.transmission-stack__cover-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
 }
 
-.transmission-stack__link--primary:hover {
-  background: transparent;
-  border: none;
+.transmission-stack__cover-link:focus-visible {
+  outline: 2px solid var(--accent, #8ecae8);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.transmission-stack__body-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.transmission-stack__body-link:hover .transmission-stack__title {
+  color: var(--accent, #8ecae8);
+}
+
+.transmission-stack__body-link:focus-visible {
+  outline: 2px solid var(--accent, #8ecae8);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 .transmission-stack__title-link {
@@ -175,6 +184,8 @@
   color: var(--accent, #8ecae8);
   text-decoration: underline;
   text-underline-offset: 0.12em;
+  position: relative;
+  z-index: 1;
 }
 
 .transmission-stack__recon-link:hover {
@@ -265,6 +276,7 @@
   letter-spacing: 0.04em;
   line-height: 1.35;
   color: var(--muted, #7a8a9a);
+  min-height: calc(0.58rem * 1.35 * 2);
 }
 
 .transmission-stack__date {

@@ -12,26 +12,72 @@ function escapeHtml(s) {
 }
 
 function reconstructionFlairHtml(release) {
-  if (release.reconstruction_variants?.ai) {
-    return `<span class="transmission-stack__flair">RECONSTRUCTION: AI (Coming Soon) · HUMAN</span>`;
+  const variants = release.reconstruction_variants;
+  if (variants?.ai || variants?.human) {
+    const ai = variants.ai;
+    const human = variants.human;
+    const aiReady = (ai?.carousel?.length ?? 0) > 0;
+    const aiText = aiReady ? "AI" : "AI (Coming Soon)";
+    const aiPart =
+      aiReady && ai?.path
+        ? `<a class="transmission-stack__recon-link" href="${escapeHtml(ai.path)}">${aiText}</a>`
+        : escapeHtml(aiText);
+    const humanPart =
+      human?.path
+        ? `<a class="transmission-stack__recon-link" href="${escapeHtml(human.path)}">HUMAN</a>`
+        : "HUMAN";
+    return `<span class="transmission-stack__flair">RECONSTRUCTION: ${aiPart} · ${humanPart}</span>`;
   }
   const label = labelReconstruction(release.reconstruction);
   if (label === "—") return "";
   return `<span class="transmission-stack__flair">${escapeHtml(`RECONSTRUCTION: ${label}`)}</span>`;
 }
 
-/**
- * @param {object} release
- */
 function coverUrl(release) {
+  const variants = release.reconstruction_variants;
+  const ai = variants?.ai;
+  const aiReady = (ai?.carousel?.length ?? 0) > 0;
+  if (aiReady && ai.carousel[0]) return ai.carousel[0];
+  if (aiReady && typeof ai.cover === "string" && ai.cover) return ai.cover;
   const carousel = release.carousel;
   if (Array.isArray(carousel) && carousel[0]) return carousel[0];
   if (typeof release.cover === "string" && release.cover) return release.cover;
   return null;
 }
 
+function primaryHrefForRelease(r) {
+  const slotHref = hrefForRelease(r);
+  const variants = r.reconstruction_variants;
+  if (!variants?.human?.path && !variants?.ai?.path) return slotHref;
+  const ai = variants.ai;
+  const aiReady = (ai?.carousel?.length ?? 0) > 0 && ai?.path;
+  if (aiReady) return ai.path;
+  return variants.human?.path || ai?.path || slotHref;
+}
+
+function hasInteractiveReconFlair(r) {
+  return Boolean(r.reconstruction_variants?.ai || r.reconstruction_variants?.human);
+}
+
+function stackMetaHtml(flair, date, title, opts = {}) {
+  const { bodyHref = null } = opts;
+  const dateTitle =
+    bodyHref != null
+      ? `<a class="transmission-stack__body-link" href="${bodyHref}">
+        <span class="transmission-stack__date">${date}</span>
+        <span class="transmission-stack__title">${title}</span>
+      </a>`
+      : `<span class="transmission-stack__date">${date}</span>
+        <span class="transmission-stack__title">${title}</span>`;
+  return `<span class="transmission-stack__meta">
+        ${flair}
+        ${dateTitle}
+      </span>`;
+}
+
 function stackItemHtml(r, i) {
   const href = escapeHtml(hrefForRelease(r));
+  const primary = escapeHtml(primaryHrefForRelease(r));
   const title = escapeHtml(r.title || "Untitled");
   const date = escapeHtml(formatTransmissionDate(r.published_at));
   const flair = reconstructionFlairHtml(r);
@@ -45,15 +91,21 @@ function stackItemHtml(r, i) {
     ? `<span class="transmission-stack__frame"><img class="transmission-stack__cover" src="${escapeHtml(cover)}" alt="" width="9" height="16" loading="lazy" decoding="async" /></span>`
     : `<span class="transmission-stack__frame transmission-stack__frame--empty" aria-hidden="true"></span>`;
 
+  if (hasInteractiveReconFlair(r)) {
+    return `<li class="transmission-stack__item${latest}">
+    ${badgeSlot}
+    <div class="transmission-stack__link transmission-stack__link--shell">
+      <a class="transmission-stack__cover-link" href="${primary}">${thumb}</a>
+      ${stackMetaHtml(flair, date, title, { bodyHref: primary })}
+    </div>
+  </li>`;
+  }
+
   return `<li class="transmission-stack__item${latest}">
     ${badgeSlot}
     <a class="transmission-stack__link" href="${href}">
       ${thumb}
-      <span class="transmission-stack__meta">
-        ${flair}
-        <span class="transmission-stack__date">${date}</span>
-        <span class="transmission-stack__title">${title}</span>
-      </span>
+      ${stackMetaHtml(flair, date, title)}
     </a>
   </li>`;
 }

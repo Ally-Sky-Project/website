@@ -125,7 +125,28 @@
           "label": "AI",
           "path": "/4/ai/",
           "reconstruction": "ai_frame_stack",
-          "carousel": []
+          "cover": "/comic/assets/the-narrow-cosmic-alignment-window-ai/01.png",
+          "carousel": [
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/01.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/02.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/03.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/04.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/05.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/06.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/07.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/08.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/09.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/10.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/11.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/12.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/13.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/14.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/15.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/16.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/17.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/18.png",
+            "/comic/assets/the-narrow-cosmic-alignment-window-ai/19.png"
+          ]
         }
       }
     }

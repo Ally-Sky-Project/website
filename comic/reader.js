@@ -93,9 +93,13 @@ export function resolveComicRoute() {
 
   let path = location.pathname.replace(/\/$/, "");
   if (path.startsWith("/")) path = path.slice(1);
-  const humanSlot = path.match(/^(\d+)\/human$/);
-  if (humanSlot) {
-    return { type: "slot", slot: parseInt(humanSlot[1], 10), variant: "human" };
+  const legacyHuman = path.match(/^(\d+)\/human$/);
+  if (legacyHuman) {
+    return { type: "slot", slot: parseInt(legacyHuman[1], 10), redirect: `/${legacyHuman[1]}/` };
+  }
+  const aiSlot = path.match(/^(\d+)\/ai$/);
+  if (aiSlot) {
+    return { type: "slot", slot: parseInt(aiSlot[1], 10), variant: "ai" };
   }
   if (/^\d+$/.test(path)) return { type: "slot", slot: parseInt(path, 10) };
   if (/^[a-f0-9]{16}\d+$/i.test(path)) return { type: "id", id: path.toLowerCase() };
@@ -356,6 +360,11 @@ export async function mountComicReader(app) {
     return;
   }
 
+  if (route.redirect) {
+    location.replace(route.redirect);
+    return;
+  }
+
   let registry;
   try {
     const res = await fetch(REGISTRY_URL);
@@ -395,18 +404,18 @@ export async function mountComicReader(app) {
 
   let viewRelease = release;
   let pageTitle = `${release.title || "Comic"} · ${id}`;
-  if (route.type === "slot" && route.variant === "human") {
-    const human = release.reconstruction_variants?.human;
-    if (!human?.carousel?.length) {
-      app.innerHTML = `<p class="err">No human reconstruction for slot <code>${route.slot}</code>.</p>`;
+  if (route.type === "slot" && route.variant === "ai") {
+    const ai = release.reconstruction_variants?.ai;
+    if (!ai) {
+      app.innerHTML = `<p class="err">No AI reconstruction for slot <code>${route.slot}</code>.</p>`;
       return;
     }
     viewRelease = {
       ...release,
-      reconstruction: human.reconstruction || "human_frame_stack",
-      carousel: human.carousel,
+      reconstruction: ai.reconstruction || "ai_frame_stack",
+      carousel: ai.carousel ?? [],
     };
-    pageTitle = `${release.title || "Comic"} (human) · ${id}`;
+    pageTitle = `${release.title || "Comic"} (AI) · ${id}`;
   }
   document.title = pageTitle;
 

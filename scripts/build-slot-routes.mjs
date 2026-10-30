@@ -45,14 +45,21 @@ function main() {
     fs.writeFileSync(path.join(slotDir, "index.html"), readerHtml);
     console.log(`/${r.slot}/ reader (canonical)`);
 
-    const human = r.reconstruction_variants?.human;
-    if (human?.path) {
-      const humanPath = human.path.replace(/\/$/, "");
-      const humanRel = humanPath.startsWith("/") ? humanPath.slice(1) : humanPath;
-      const humanDir = path.join(ROOT, ...humanRel.split("/"));
-      fs.mkdirSync(humanDir, { recursive: true });
-      fs.writeFileSync(path.join(humanDir, "index.html"), readerHtml);
-      console.log(`${human.path} reader (human reconstruction)`);
+    for (const variant of Object.values(r.reconstruction_variants || {})) {
+      if (!variant?.path) continue;
+      const variantPath = variant.path.replace(/\/$/, "");
+      const variantRel = variantPath.startsWith("/") ? variantPath.slice(1) : variantPath;
+      const variantDir = path.join(ROOT, ...variantRel.split("/"));
+      fs.mkdirSync(variantDir, { recursive: true });
+      fs.writeFileSync(path.join(variantDir, "index.html"), readerHtml);
+      console.log(`${variant.path} reader (${variant.label || "variant"})`);
+    }
+
+    if (r.slot === 4) {
+      const legacyHuman = path.join(ROOT, "4", "human");
+      fs.mkdirSync(legacyHuman, { recursive: true });
+      fs.writeFileSync(path.join(legacyHuman, "index.html"), redirectIndexHtml(slotUrl));
+      console.log(`/4/human/ → ${slotUrl}`);
     }
 
     const idDir = path.join(ROOT, r.id);

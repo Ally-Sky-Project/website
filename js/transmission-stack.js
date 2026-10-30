@@ -11,20 +11,8 @@ function escapeHtml(s) {
     .replace(/"/g, "&quot;");
 }
 
-function stackReaderHref(release) {
-  const human = release.reconstruction_variants?.human;
-  if (human?.path) return human.path;
-  if (human && release.slot) return `/${release.slot}/human/`;
-  return hrefForRelease(release);
-}
-
-/**
- * Slot 4 only: AI label + link to human reconstruction (avoids nested anchors in card link).
- * @param {object} release
- */
 function reconstructionFlairHtml(release) {
-  const human = release.reconstruction_variants?.human;
-  if (human) {
+  if (release.reconstruction_variants?.ai) {
     return `<span class="transmission-stack__flair">RECONSTRUCTION: AI (Coming Soon) · HUMAN</span>`;
   }
   const label = labelReconstruction(release.reconstruction);
@@ -38,14 +26,12 @@ function reconstructionFlairHtml(release) {
 function coverUrl(release) {
   const carousel = release.carousel;
   if (Array.isArray(carousel) && carousel[0]) return carousel[0];
-  const humanCarousel = release.reconstruction_variants?.human?.carousel;
-  if (Array.isArray(humanCarousel) && humanCarousel[0]) return humanCarousel[0];
   if (typeof release.cover === "string" && release.cover) return release.cover;
   return null;
 }
 
 function stackItemHtml(r, i) {
-  const href = escapeHtml(stackReaderHref(r));
+  const href = escapeHtml(hrefForRelease(r));
   const title = escapeHtml(r.title || "Untitled");
   const date = escapeHtml(formatTransmissionDate(r.published_at));
   const flair = reconstructionFlairHtml(r);

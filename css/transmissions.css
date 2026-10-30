@@ -159,6 +159,16 @@
   letter-spacing: 0.03em;
 }
 
+.transmission-card__recon-link {
+  color: var(--accent, #8ecae8);
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.transmission-card__recon-link:hover {
+  color: var(--ink, #e8eef4);
+}
+
 .transmission-card__telemetry {
   margin: 0 0 0.65rem;
   color: var(--muted, #7a8a9a);

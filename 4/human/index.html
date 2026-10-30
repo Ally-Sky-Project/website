@@ -2,12 +2,34 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="refresh" content="0;url=/4/" />
-    <link rel="canonical" href="/4/" />
-    <title>Redirect</title>
-    <script>location.replace("/4/");</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Comic · Ally Sky</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Source+Code+Pro:ital,wght@0,500;0,800;1,800&display=block"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/beacon.css" />
+    <link rel="stylesheet" href="/comic/reader.css" />
+    <link rel="stylesheet" href="/css/wordmark.css" />
+    <link rel="stylesheet" href="/css/site-nav.css" />
+    <link rel="stylesheet" href="/css/site-footer.css" />
   </head>
   <body>
-    <p><a href="/4/">Continue to transmission</a></p>
+    <div class="beacon beacon--home reader-beacon">
+      <div id="site-nav"></div>
+      <div id="app" class="reader-content">
+        <p class="meta">Loading…</p>
+      </div>
+      <div id="site-footer"></div>
+    </div>
+    <script type="module">
+      import { mountSiteNav } from "/js/site-nav.js";
+      import { mountSiteFooter } from "/js/site-footer.js";
+      mountSiteNav(document.getElementById("site-nav"), "");
+      mountSiteFooter(document.getElementById("site-footer"), { minimal: true });
+    </script>
+    <script type="module" src="/comic/reader.js"></script>
   </body>
 </html>

@@ -8,7 +8,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { dedupeReleases } from "../js/transmissions.js";
 import { hrefForRelease } from "../js/transmission-slots.js";
-import { encodingLines, formatMessagePayload } from "../js/encoding.js";
+import { encodingLines, formatFrameCount, formatMessagePayload } from "../js/encoding.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -30,7 +30,8 @@ function itemSummary(release) {
   const lines = encodingLines(release);
   const parts = [];
   if (lines.length) parts.push(lines.join(" · "));
-  if (release.frame_count != null) parts.push(`${release.frame_count} frames`);
+  const frames = formatFrameCount(release);
+  if (frames !== "—") parts.push(`${frames} frames`);
   const payload = formatMessagePayload(release);
   if (payload !== "—") parts.push(`payload ${payload}`);
   parts.push(`ID ${release.id}`);

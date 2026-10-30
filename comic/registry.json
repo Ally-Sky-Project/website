@@ -10,7 +10,7 @@
       "published_at": "2026-10-27T18:29:17.281Z",
       "reality_layer": "description",
       "reconstruction": "ai_frame_stack",
-      "frame_count": 12,
+      "frame_count": 11,
       "payload_bytes": 1430,
       "carousel": [
         "/comic/assets/03-time-hallucination/01.png",
@@ -37,7 +37,7 @@
       "published_at": "2026-10-24T05:59:07.456Z",
       "reality_layer": "description",
       "reconstruction": "ai_frame_stack",
-      "frame_count": 8,
+      "frame_count": 7,
       "payload_bytes": 523,
       "carousel": [
         "/comic/assets/did-we-just-launch/01.png",
@@ -63,7 +63,7 @@
       "published_at": "2026-10-26T06:30:03.928Z",
       "reality_layer": "description",
       "reconstruction": "ai_frame_stack",
-      "frame_count": 10,
+      "frame_count": 9,
       "payload_bytes": 1031,
       "carousel": [
         "/comic/assets/transmission-05-glitch-analysis/01.png",
@@ -91,7 +91,7 @@
       "published_at": "2026-10-29T23:20:00.000Z",
       "reality_layer": "description",
       "reconstruction": "human_frame_stack",
-      "frame_count": 19,
+      "frame_count": 18,
       "payload_bytes": 2719,
       "cover": "/comic/assets/the-narrow-cosmic-alignment-window-human/01.png",
       "carousel": [

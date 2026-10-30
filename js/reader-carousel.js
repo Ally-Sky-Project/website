@@ -8,3 +8,12 @@ export function carouselForReader(carousel) {
   if (carousel.length === 1) return [];
   return carousel.slice(0, -1);
 }
+
+/**
+ * Frames shown in the site reader (excludes trailing signature PNG).
+ * @param {string[] | undefined | null} carousel
+ * @returns {number}
+ */
+export function readerFrameCountFromCarousel(carousel) {
+  return carouselForReader(carousel).length;
+}

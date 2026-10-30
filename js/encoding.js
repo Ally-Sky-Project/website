@@ -1,5 +1,7 @@
 /** NTQTP transmission encoding labels (registry + reader). */
 
+import { readerFrameCountFromCarousel } from "./reader-carousel.js";
+
 export const REALITY_LAYER_LABELS = {
   description: "DESCRIPTION-LOCKED",
   capture: "CAPTURED WAVEFORM",
@@ -41,12 +43,26 @@ export function formatPayloadSize(bytes) {
 }
 
 /**
- * @param {{ frame_count?: number } | undefined} release
+ * Frames listed for humans (matches reader; excludes trailing signature PNG).
+ * @param {{ frame_count?: number, carousel?: string[], reconstruction_variants?: object } | undefined} release
  */
 export function formatFrameCount(release) {
-  const n = release?.frame_count;
-  if (n == null || Number.isNaN(Number(n))) return "—";
-  return String(n);
+  if (!release) return "—";
+  const candidates = [
+    release.carousel,
+    release.reconstruction_variants?.ai?.carousel,
+    release.reconstruction_variants?.human?.carousel,
+  ];
+  for (const c of candidates) {
+    const n = readerFrameCountFromCarousel(c);
+    if (n > 0) return String(n);
+  }
+  const legacy = release.frame_count;
+  if (legacy != null && !Number.isNaN(Number(legacy))) {
+    const n = Number(legacy);
+    return n > 1 ? String(n - 1) : String(n);
+  }
+  return "—";
 }
 
 /**

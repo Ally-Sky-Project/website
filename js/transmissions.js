@@ -3,6 +3,11 @@ import {
   formatMessagePayload,
   renderEncodingLinesHtml,
 } from "./encoding.js";
+import {
+  hasReconstructionVariants,
+  primaryVariantHref,
+  renderReconstructionVariantEncodingHtml,
+} from "./reconstruction-variants.js";
 import { hrefForRelease, releasesWithSlots } from "./transmission-slots.js";
 
 const REGISTRY_URL = "/comic/registry.json";
@@ -128,20 +133,25 @@ export async function mountTransmissionsRegistry(root) {
     .map((r) => {
       const subject = escapeHtml(r.title || "Untitled");
       const id = escapeHtml(r.id || "");
-      const href = hrefForRelease(r);
+      const href = hasReconstructionVariants(r)
+        ? primaryVariantHref(r)
+        : hrefForRelease(r);
+      const hrefEsc = escapeHtml(href);
       const date = escapeHtml(formatTransmissionDate(r.published_at));
-      const encoding = renderEncodingLinesHtml(r, "transmission-card__encoding");
+      const encoding = hasReconstructionVariants(r)
+        ? renderReconstructionVariantEncodingHtml(r)
+        : renderEncodingLinesHtml(r, "transmission-card__encoding");
       const frames = escapeHtml(formatFrameCount(r));
       const payload = escapeHtml(formatMessagePayload(r));
       const cross = renderCrosspostLinks(r.crosspost);
       return `<li>
         <article class="transmission-card">
           <h2 class="transmission-card__subject">
-            <a href="${href}">${subject}</a>
+            <a href="${hrefEsc}">${subject}</a>
           </h2>
           ${encoding}
           <p class="transmission-card__telemetry">
-            <a class="transmission-card__id" href="${href}"><code>${id}</code></a>
+            <a class="transmission-card__id" href="${hrefEsc}"><code>${id}</code></a>
             <span class="transmission-card__sep" aria-hidden="true">·</span>
             <span>${date}</span>
             <span class="transmission-card__sep" aria-hidden="true">·</span>

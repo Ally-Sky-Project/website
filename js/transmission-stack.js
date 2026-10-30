@@ -1,6 +1,11 @@
-import { labelReconstruction } from "./encoding.js";
 import { formatTransmissionDate, stackReleases } from "./transmissions.js";
 import { hrefForRelease } from "./transmission-slots.js";
+import {
+  hasReconstructionVariants,
+  primaryVariantHref,
+  reconstructionStackFlairHtml,
+  stackCoverUrl,
+} from "./reconstruction-variants.js";
 
 const REGISTRY_URL = "/comic/registry.json";
 
@@ -12,51 +17,19 @@ function escapeHtml(s) {
 }
 
 function reconstructionFlairHtml(release) {
-  const variants = release.reconstruction_variants;
-  if (variants?.ai || variants?.human) {
-    const ai = variants.ai;
-    const human = variants.human;
-    const aiReady = (ai?.carousel?.length ?? 0) > 0;
-    const aiText = aiReady ? "AI" : "AI (Coming Soon)";
-    const aiPart =
-      aiReady && ai?.path
-        ? `<a class="transmission-stack__recon-link" href="${escapeHtml(ai.path)}">${aiText}</a>`
-        : escapeHtml(aiText);
-    const humanPart =
-      human?.path
-        ? `<a class="transmission-stack__recon-link" href="${escapeHtml(human.path)}">HUMAN</a>`
-        : "HUMAN";
-    return `<span class="transmission-stack__flair">RECONSTRUCTION: ${aiPart} · ${humanPart}</span>`;
-  }
-  const label = labelReconstruction(release.reconstruction);
-  if (label === "—") return "";
-  return `<span class="transmission-stack__flair">${escapeHtml(`RECONSTRUCTION: ${label}`)}</span>`;
+  return reconstructionStackFlairHtml(release);
 }
 
 function coverUrl(release) {
-  const variants = release.reconstruction_variants;
-  const ai = variants?.ai;
-  const aiReady = (ai?.carousel?.length ?? 0) > 0;
-  if (aiReady && ai.carousel[0]) return ai.carousel[0];
-  if (aiReady && typeof ai.cover === "string" && ai.cover) return ai.cover;
-  const carousel = release.carousel;
-  if (Array.isArray(carousel) && carousel[0]) return carousel[0];
-  if (typeof release.cover === "string" && release.cover) return release.cover;
-  return null;
+  return stackCoverUrl(release);
 }
 
 function primaryHrefForRelease(r) {
-  const slotHref = hrefForRelease(r);
-  const variants = r.reconstruction_variants;
-  if (!variants?.human?.path && !variants?.ai?.path) return slotHref;
-  const ai = variants.ai;
-  const aiReady = (ai?.carousel?.length ?? 0) > 0 && ai?.path;
-  if (aiReady) return ai.path;
-  return variants.human?.path || ai?.path || slotHref;
+  return primaryVariantHref(r);
 }
 
 function hasInteractiveReconFlair(r) {
-  return Boolean(r.reconstruction_variants?.ai || r.reconstruction_variants?.human);
+  return hasReconstructionVariants(r);
 }
 
 function stackMetaHtml(flair, date, title, opts = {}) {

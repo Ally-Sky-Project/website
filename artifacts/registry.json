@@ -1,0 +1,26 @@
+{
+  "artifacts": [
+    {
+      "id": "wonderwall-v2-1b",
+      "type": "track",
+      "title": "Wonderwall v2.1b",
+      "published_at": "2026-10-30T00:00:00.000Z",
+      "nmf_alignment": {
+        "reference": "Oasis · Wonderwall",
+        "reference_date": "1995-10-30",
+        "next_window": "2037-10-30"
+      },
+      "related_transmission": { "slot": 4 },
+      "variants": [
+        {
+          "id": "complexity",
+          "label": "Complexity version",
+          "cover_path": "/artifacts/assets/wonderwall-v2-1b/complexity-cover.png",
+          "lyrics_path": "/artifacts/content/wonderwall-v2-1b-complexity.txt",
+          "stems_url": "https://github.com/Ally-Sky-Project/wonderwall-v2.1b/releases/tag/complexity-v1",
+          "stems_label": "FLAC stems · complexity-v1"
+        }
+      ]
+    }
+  ]
+}

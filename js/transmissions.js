@@ -144,8 +144,15 @@ export async function mountTransmissionsRegistry(root) {
       const frames = escapeHtml(formatFrameCount(r));
       const payload = escapeHtml(formatMessagePayload(r));
       const cross = renderCrosspostLinks(r.crosspost);
+      const thumb = typeof r.registry_thumb === "string" ? r.registry_thumb : null;
+      const coverHrefEsc = escapeHtml(href);
+      const coverHtml = thumb
+        ? `<a class="transmission-card__cover-link" href="${coverHrefEsc}"><img class="transmission-card__cover" src="${escapeHtml(thumb)}" alt="" width="9" height="16" loading="lazy" decoding="async" /></a>`
+        : "";
       return `<li>
-        <article class="transmission-card">
+        <article class="transmission-card${thumb ? "" : " transmission-card--no-cover"}">
+          ${coverHtml}
+          <div class="transmission-card__body">
           <h2 class="transmission-card__subject">
             <a href="${hrefEsc}">${subject}</a>
           </h2>
@@ -163,6 +170,7 @@ export async function mountTransmissionsRegistry(root) {
             <span class="transmission-card__cross-label">Cross-post</span>
             ${cross}
           </p>
+          </div>
         </article>
       </li>`;
     })

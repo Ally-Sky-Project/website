@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="css/site-nav.css" />
     <link rel="stylesheet" href="css/site-footer.css" />
     <link rel="stylesheet" href="css/transmission-stack.css" />
+    <link rel="stylesheet" href="css/artifact-stack.css" />
     <link rel="modulepreload" href="js/site-nav.js" />
     <link rel="modulepreload" href="js/wordmark-glitch.js" />
     <link rel="modulepreload" href="js/ntqtp-telemetry.js" />
@@ -32,6 +33,12 @@
         id="transmission-stack"
         class="transmission-stack"
         aria-label="Transmission stack"
+        hidden
+      ></aside>
+      <aside
+        id="artifact-stack"
+        class="artifact-stack"
+        aria-label="Artifact stack"
         hidden
       ></aside>
       <div class="transmission-wrap is-pending" id="transmission-wrap">
@@ -67,6 +74,7 @@ BEACON TELEMETRY (NTQTP)
       import { mountSiteNav } from "./js/site-nav.js";
       import { mountSiteFooter } from "./js/site-footer.js";
       import { mountTransmissionStack } from "./js/transmission-stack.js";
+      import { mountArtifactStack } from "./js/artifact-stack.js";
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       function flushFrames() {
@@ -143,6 +151,7 @@ ${rule}`;
       transmissionWrap?.classList.remove("is-pending");
 
       mountTransmissionStack(document.getElementById("transmission-stack"));
+      mountArtifactStack(document.getElementById("artifact-stack"));
 
       async function loadChannels() {
         const table = document.getElementById("channel-table");

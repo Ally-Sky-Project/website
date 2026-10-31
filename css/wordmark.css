@@ -179,6 +179,25 @@
   overflow: hidden;
 }
 
+@media (max-width: 40rem) {
+  .site-nav__brand {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .site-nav__brand .wordmark-hero-wrap,
+  .site-nav__brand .wordmark-nav-static {
+    max-width: none;
+    overflow: visible;
+  }
+
+  .wordmark-nav-static .transmission.wordmark,
+  .site-nav__brand .wordmark-hero-wrap .transmission.wordmark {
+    overflow: visible;
+  }
+}
+
 .site-nav__brand .wordmark-hero-wrap {
   display: block;
   width: max-content;

@@ -94,6 +94,9 @@ export function renderReconstructionVariantEncodingHtml(
 }
 
 export function stackCoverUrl(release) {
+  if (typeof release.registry_thumb === "string" && release.registry_thumb) {
+    return release.registry_thumb;
+  }
   const variants = release.reconstruction_variants;
   const ai = variants?.ai;
   if (aiVariantReady(release) && ai.carousel[0]) return ai.carousel[0];

@@ -25,7 +25,8 @@
         "/comic/assets/03-time-hallucination/10.png",
         "/comic/assets/03-time-hallucination/11.png",
         "/comic/assets/03-time-hallucination/12.png"
-      ]
+      ],
+      "registry_thumb": "/comic/assets/03-time-hallucination/registry-thumb.png"
     },
     {
       "id": "ad5ba57c25217bfe1",
@@ -51,7 +52,8 @@
       ],
       "crosspost": {
         "tiktok_photo": "https://www.tiktok.com/@allyskyproject/photo/7700137378836483359"
-      }
+      },
+      "registry_thumb": "/comic/assets/did-we-just-launch/registry-thumb.png"
     },
     {
       "id": "afe3bc1dfa0548ac1",
@@ -79,7 +81,8 @@
       ],
       "crosspost": {
         "tiktok_photo": "https://www.tiktok.com/@allyskyproject/photo/7700862234074942750"
-      }
+      },
+      "registry_thumb": "/comic/assets/transmission-05-glitch-analysis/registry-thumb.png"
     },
     {
       "id": "0d48a9aac2c7a6621",
@@ -148,7 +151,8 @@
             "/comic/assets/the-narrow-cosmic-alignment-window-ai/19.png"
           ]
         }
-      }
+      },
+      "registry_thumb": "/comic/assets/the-narrow-cosmic-alignment-window-human/registry-thumb.png"
     }
   ]
 }

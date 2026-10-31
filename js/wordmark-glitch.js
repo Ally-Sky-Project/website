@@ -79,8 +79,8 @@ export function wireStabilizeButton(btn) {
       if (on) ctrl.stabilize();
       else ctrl.resume();
     }
-    btn.textContent = on ? "STABILIZED" : "STABILIZE";
     btn.setAttribute("aria-pressed", on ? "true" : "false");
+    btn.setAttribute("aria-label", on ? "Resume wordmark glitch effects" : "Stabilize wordmark glitch effects");
     try {
       localStorage.setItem(WORDMARK_STABILIZE_KEY, on ? "1" : "0");
     } catch {

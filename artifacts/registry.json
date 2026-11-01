@@ -16,7 +16,9 @@
           "id": "superposition",
           "label": "Superposition version",
           "cover_path": "/artifacts/assets/wonderwall-v2-1b/superposition-cover.png",
-          "lyrics_path": "/artifacts/content/wonderwall-v2-1b-superposition.txt"
+          "lyrics_path": "/artifacts/content/wonderwall-v2-1b-superposition.txt",
+          "stems_url": "https://github.com/Ally-Sky-Project/wonderwall-v2.1b/releases/tag/superposition-v1",
+          "stems_label": "FLAC stems · superposition-v1"
         },
         {
           "id": "complexity",

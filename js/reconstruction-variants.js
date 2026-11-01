@@ -99,7 +99,7 @@ export function stackCoverUrl(release) {
   }
   const variants = release.reconstruction_variants;
   const ai = variants?.ai;
-  if (aiVariantReady(release) && ai.carousel[0]) return ai.carousel[0];
+  if (aiVariantReady(release) && ai.carousel?.[0]) return ai.carousel[0];
   if (aiVariantReady(release) && typeof ai.cover === "string" && ai.cover) return ai.cover;
   const carousel = release.carousel;
   if (Array.isArray(carousel) && carousel[0]) return carousel[0];

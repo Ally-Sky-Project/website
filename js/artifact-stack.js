@@ -5,6 +5,7 @@ import {
   formatArtifactDate,
   hrefForArtifact,
   hrefForArtifactVariant,
+  publishedAtForListing,
 } from "./artifacts.js";
 
 const REGISTRY_URL = "/artifacts/registry.json";
@@ -21,7 +22,7 @@ function stackItemHtml(a, variant, i) {
   const href = escapeHtml(pageHref);
   const title = escapeHtml(a.title || "Untitled");
   const type = escapeHtml(artifactTypeLabel(a));
-  const date = escapeHtml(formatArtifactDate(a.published_at));
+  const date = escapeHtml(formatArtifactDate(publishedAtForListing(a, variant)));
   const latest = i === 0 ? " artifact-stack__item--latest" : "";
   const sub = variant?.label
     ? `<span class="artifact-stack__variant">${escapeHtml(variant.label)}</span>`

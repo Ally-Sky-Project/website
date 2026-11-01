@@ -6,6 +6,7 @@ import {
   renderCrosspostLinks,
 } from "/js/transmissions.js";
 import { hrefForRelease, idForSlotFromReleases } from "/js/transmission-slots.js";
+import { renderTransmissionContextHtml } from "/js/transmission-context.js";
 
 const REGISTRY_URL = "/comic/registry.json";
 const FRAME_MODE_KEY = "ally-reader-frame-mode";
@@ -452,6 +453,12 @@ export async function mountComicReader(app) {
     ? `<p class="meta reader-crosspost">Cross-post ${renderCrosspostLinks(release.crosspost)}</p>`
     : "";
 
+  const contextBlock = renderTransmissionContextHtml(release, {
+    blockClass: "reader-context",
+    lineClass: "reader-context__line",
+    labelClass: "reader-context__label",
+  });
+
   const hashVerifyBlock = renderHashVerifyBlock(release, carousel.length > 0);
 
   const adj = adjacentReleases(registry.releases, id);
@@ -465,6 +472,7 @@ export async function mountComicReader(app) {
       Version <code>${parts.version}</code> · listed <code>${published}</code>
     </p>
     ${encodingBlock}
+    ${contextBlock}
     ${metricsLine}
     ${crosspostBlock}
     ${carouselHtml}

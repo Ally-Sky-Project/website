@@ -184,6 +184,33 @@
   color: var(--muted, #7a8a9a);
 }
 
+.artifact-related__heading {
+  margin: 0 0 0.35rem;
+}
+
+.artifact-related__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.artifact-related__item {
+  margin: 0.35rem 0 0;
+  line-height: 1.45;
+}
+
+.artifact-related__recon {
+  display: inline;
+  margin-left: 0.35rem;
+  color: var(--muted, #7a8a9a);
+}
+
+.artifact-related__recon a {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 .artifact-related__label {
   text-transform: uppercase;
   letter-spacing: 0.06em;

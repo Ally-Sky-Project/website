@@ -45,6 +45,35 @@ h1 {
   text-decoration: underline;
 }
 
+.reader-context {
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.reader-context__line {
+  margin: 0 0 0.35rem;
+}
+
+.reader-context__line:last-child {
+  margin-bottom: 0;
+}
+
+.reader-context__label {
+  color: var(--muted);
+}
+
+.reader-context a {
+  color: var(--accent-dim, #5a9ab8);
+  text-decoration: none;
+}
+
+.reader-context a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
 .reader-encoding {
   font-family: var(--mono, "Source Code Pro", ui-monospace, monospace);
   font-size: 0.75rem;

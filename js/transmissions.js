@@ -9,6 +9,7 @@ import {
   renderReconstructionVariantEncodingHtml,
 } from "./reconstruction-variants.js";
 import { hrefForRelease, releasesWithSlots } from "./transmission-slots.js";
+import { renderTransmissionContextHtml } from "./transmission-context.js";
 
 const REGISTRY_URL = "/comic/registry.json";
 
@@ -144,6 +145,11 @@ export async function mountTransmissionsRegistry(root) {
       const frames = escapeHtml(formatFrameCount(r));
       const payload = escapeHtml(formatMessagePayload(r));
       const cross = renderCrosspostLinks(r.crosspost);
+      const context = renderTransmissionContextHtml(r, {
+        blockClass: "transmission-card__context",
+        lineClass: "transmission-card__context-line",
+        labelClass: "transmission-card__context-label",
+      });
       const thumb = typeof r.registry_thumb === "string" ? r.registry_thumb : null;
       const coverHrefEsc = escapeHtml(href);
       const coverHtml = thumb
@@ -157,6 +163,7 @@ export async function mountTransmissionsRegistry(root) {
             <a href="${hrefEsc}">${subject}</a>
           </h2>
           ${encoding}
+          ${context}
           <p class="transmission-card__telemetry">
             <a class="transmission-card__id" href="${hrefEsc}"><code>${id}</code></a>
             <span class="transmission-card__sep" aria-hidden="true">·</span>

@@ -219,6 +219,35 @@
   letter-spacing: 0.03em;
 }
 
+.transmission-card__context {
+  margin: 0 0 calc(0.65rem * var(--tx-card-height-scale));
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: var(--muted, #7a8a9a);
+}
+
+.transmission-card__context-line {
+  margin: 0 0 0.25rem;
+}
+
+.transmission-card__context-line:last-child {
+  margin-bottom: 0;
+}
+
+.transmission-card__context-label {
+  color: var(--muted, #7a8a9a);
+}
+
+.transmission-card__context a {
+  color: var(--accent-dim, #5a9ab8);
+  text-decoration: none;
+}
+
+.transmission-card__context a:hover {
+  color: var(--accent, #8ecae8);
+  text-decoration: underline;
+}
+
 .transmission-card__recon-link {
   color: var(--accent, #8ecae8);
   text-decoration: underline;

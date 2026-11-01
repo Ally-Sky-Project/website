@@ -38,21 +38,100 @@ export function formatArtifactDateLong(iso) {
 }
 
 /**
- * @param {object} artifact
+ * Long date with weekday (UTC) for NMF listing copy.
+ * @param {string | undefined} iso
  */
-function artifactListingMetaHtml(artifact) {
-  const listed = formatArtifactDateLong(artifact.published_at);
-  const align = artifact.nmf_alignment;
+export function formatArtifactDateLongWithWeekday(iso) {
+  if (!iso) return "—";
+  const day = String(iso).slice(0, 10);
+  const d = new Date(`${day}T12:00:00Z`);
+  if (Number.isNaN(d.getTime())) return "—";
+  return d.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+/**
+ * @param {object} artifact
+ * @param {object | null | undefined} variant
+ */
+export function publishedAtForListing(artifact, variant) {
+  if (variant?.published_at) return variant.published_at;
+  return artifact?.published_at;
+}
+
+/**
+ * @param {object} artifact
+ * @param {object | null | undefined} variant
+ */
+function nmfAlignmentForListing(artifact, variant) {
+  const base = artifact?.nmf_alignment;
+  const over = variant?.nmf_alignment;
+  if (!base && !over) return null;
+  return { ...base, ...over };
+}
+
+const LISTING_WINDOW_TAGS = {
+  nmf: "NMF",
+  sunday: "Sunday release",
+};
+
+/**
+ * @param {string | undefined} iso
+ * @param {string | undefined} referenceDate YYYY-MM-DD
+ */
+function isSameMonthDay(iso, referenceDate) {
+  if (!iso || !referenceDate) return false;
+  return String(iso).slice(5, 10) === String(referenceDate).slice(5, 10);
+}
+
+/**
+ * @param {object} align
+ */
+function listingWindowTag(align) {
+  const kind = align?.listing_window || "nmf";
+  const label = LISTING_WINDOW_TAGS[kind] || kind;
+  return ` (${escapeHtml(label)})`;
+}
+
+/**
+ * @param {object} artifact
+ * @param {object | null | undefined} [variant]
+ */
+function artifactListingMetaHtml(artifact, variant) {
+  const listedIso = publishedAtForListing(artifact, variant);
+  const align = nmfAlignmentForListing(artifact, variant);
   if (!align?.reference_date) {
-    return `Listed <code>${escapeHtml(formatArtifactDate(artifact.published_at))}</code>`;
+    return `Listed <code>${escapeHtml(formatArtifactDate(listedIso))}</code>`;
   }
+  const listed = formatArtifactDateLongWithWeekday(listedIso);
   const refDate = formatArtifactDateLong(align.reference_date);
   const reference = escapeHtml(align.reference || "Wonderwall");
-  let text = `Listed ${escapeHtml(listed)} (NMF) — date aligned with the ${reference} release (${escapeHtml(refDate)})`;
-  if (align.next_window) {
-    const next = formatArtifactDateLong(align.next_window);
-    text += `. Next opportunity: ${escapeHtml(next)} (NMF)`;
+  const window = align.listing_window || "nmf";
+  const listedPart = `Listed ${escapeHtml(listed)}${listingWindowTag(align)}`;
+
+  let text;
+  if (window === "sunday") {
+    text = `${listedPart} — same Wonderwall weekend as Oct 30 NMF. ${reference} (${escapeHtml(refDate)})`;
+  } else {
+    text = `${listedPart} — aligned with the ${reference} release (${escapeHtml(refDate)})`;
   }
+
+  const nextNmf = align.next_window || align.reference_date;
+  if (nextNmf && isSameMonthDay(nextNmf, align.reference_date)) {
+    const next = formatArtifactDateLongWithWeekday(nextNmf);
+    text += `. Next NMF opportunity: ${escapeHtml(next)} (NMF)`;
+  }
+
+  if (align.next_sunday_release) {
+    const nextSun = formatArtifactDateLongWithWeekday(align.next_sunday_release);
+    text += `. Next Sunday release: ${escapeHtml(nextSun)} (Sunday release)`;
+  }
+
   return text;
 }
 
@@ -60,9 +139,12 @@ function artifactListingMetaHtml(artifact) {
  * @param {object[]} artifacts
  */
 export function sortArtifacts(artifacts) {
-  return [...(artifacts || [])].sort(
-    (a, b) => Date.parse(b.published_at || 0) - Date.parse(a.published_at || 0),
-  );
+  const sortKey = (a) => {
+    const variantTimes = (a.variants || []).map((v) => Date.parse(v.published_at || 0));
+    const t = Date.parse(a.published_at || 0);
+    return Math.max(t, ...variantTimes, 0);
+  };
+  return [...(artifacts || [])].sort((a, b) => sortKey(b) - sortKey(a));
 }
 
 /**
@@ -82,7 +164,11 @@ export function expandArtifactListing(artifacts) {
       rows.push({ artifact, variant: null });
     }
   }
-  return rows;
+  return rows.sort(
+    (a, b) =>
+      Date.parse(publishedAtForListing(b.artifact, b.variant) || 0) -
+      Date.parse(publishedAtForListing(a.artifact, a.variant) || 0),
+  );
 }
 
 /**
@@ -172,16 +258,57 @@ export function artifactTypeLabel(artifact) {
 
 /**
  * @param {object} artifact
+ * @returns {{ slot: number, title?: string, reconstruction_variants?: boolean }[]}
+ */
+function relatedTransmissionsForArtifact(artifact) {
+  const list = artifact?.related_transmissions;
+  if (Array.isArray(list) && list.length) {
+    return list.filter((t) => t?.slot > 0);
+  }
+  const single = artifact?.related_transmission;
+  if (single?.slot > 0) {
+    return [
+      {
+        slot: single.slot,
+        title: single.title,
+        reconstruction_variants: single.reconstruction_variants !== false,
+      },
+    ];
+  }
+  return [];
+}
+
+/**
+ * @param {object} artifact
  */
 function relatedTransmissionHtml(artifact) {
-  const slot = artifact?.related_transmission?.slot;
-  if (!slot) return "";
-  return `<p class="artifact-related">
-    <span class="artifact-related__label">Transmission</span>
-    <a href="/${slot}/ai/">AI</a>
-    <span class="artifact-related__sep" aria-hidden="true">·</span>
-    <a href="/${slot}/human/">HUMAN</a>
-  </p>`;
+  const rows = relatedTransmissionsForArtifact(artifact);
+  if (!rows.length) return "";
+
+  const label = rows.length > 1 ? "Transmissions" : "Transmission";
+  const items = rows
+    .map((t) => {
+      const slot = t.slot;
+      const title = escapeHtml(t.title || `Transmission ${slot}`);
+      const titleHref = t.reconstruction_variants ? `/${slot}/human/` : `/${slot}/`;
+      let recon = "";
+      if (t.reconstruction_variants) {
+        recon = `<span class="artifact-related__recon">
+        <a href="/${slot}/ai/">AI</a>
+        <span class="artifact-related__sep" aria-hidden="true">·</span>
+        <a href="/${slot}/human/">HUMAN</a>
+      </span>`;
+      }
+      return `<li class="artifact-related__item">
+      <a href="${titleHref}">${title}</a>${recon}
+    </li>`;
+    })
+    .join("");
+
+  return `<div class="artifact-related">
+    <p class="artifact-related__heading"><span class="artifact-related__label">${label}</span></p>
+    <ul class="artifact-related__list">${items}</ul>
+  </div>`;
 }
 
 /**
@@ -232,7 +359,7 @@ export async function mountArtifactsRegistry(root) {
       const href = escapeHtml(pageHref);
       const title = escapeHtml(a.title || "Untitled");
       const type = escapeHtml(artifactTypeLabel(a));
-      const date = escapeHtml(formatArtifactDate(a.published_at));
+      const date = escapeHtml(formatArtifactDate(publishedAtForListing(a, variant)));
       const variantNote = variant?.label
         ? `<span class="artifact-card__variants">${escapeHtml(variant.label)}</span>`
         : "";
@@ -341,7 +468,7 @@ export async function mountArtifactDetail(app, artifactId, opts = {}) {
     <header class="artifact-detail__header">
       <p class="artifact-detail__type">${escapeHtml(artifactTypeLabel(artifact))}</p>
       <h1>${escapeHtml(artifact.title || "Untitled")}</h1>
-      <p class="artifact-detail__meta">${artifactListingMetaHtml(artifact)}</p>
+      <p class="artifact-detail__meta">${artifactListingMetaHtml(artifact, active)}</p>
       ${relatedTransmissionHtml(artifact)}
       ${tabs}
     </header>

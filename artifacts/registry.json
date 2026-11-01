@@ -10,23 +10,42 @@
         "reference_date": "1995-10-30",
         "next_window": "2037-10-30"
       },
-      "related_transmission": { "slot": 4 },
+      "related_transmissions": [
+        {
+          "slot": 4,
+          "title": "The Narrow Cosmic Alignment Window",
+          "reconstruction_variants": true
+        },
+        {
+          "slot": 5,
+          "title": "The Janus Effect"
+        }
+      ],
       "variants": [
         {
           "id": "superposition",
           "label": "Superposition version",
+          "published_at": "2026-11-01T00:00:00.000Z",
           "cover_path": "/artifacts/assets/wonderwall-v2-1b/superposition-cover.png",
           "lyrics_path": "/artifacts/content/wonderwall-v2-1b-superposition.txt",
           "stems_url": "https://github.com/Ally-Sky-Project/wonderwall-v2.1b/releases/tag/superposition-v1",
-          "stems_label": "FLAC stems · superposition-v1"
+          "stems_label": "FLAC stems · superposition-v1",
+          "nmf_alignment": {
+            "listing_window": "sunday",
+            "next_sunday_release": "2037-11-01"
+          }
         },
         {
           "id": "complexity",
           "label": "Complexity version",
+          "published_at": "2026-10-30T00:00:00.000Z",
           "cover_path": "/artifacts/assets/wonderwall-v2-1b/complexity-cover.png",
           "lyrics_path": "/artifacts/content/wonderwall-v2-1b-complexity.txt",
           "stems_url": "https://github.com/Ally-Sky-Project/wonderwall-v2.1b/releases/tag/complexity-v1",
-          "stems_label": "FLAC stems · complexity-v1"
+          "stems_label": "FLAC stems · complexity-v1",
+          "nmf_alignment": {
+            "listing_window": "nmf"
+          }
         }
       ]
     }

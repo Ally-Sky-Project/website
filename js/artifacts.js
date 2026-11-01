@@ -66,6 +66,26 @@ export function sortArtifacts(artifacts) {
 }
 
 /**
+ * One listing row per track version (variant order preserved within each artifact).
+ * @param {object[]} artifacts
+ * @returns {{ artifact: object, variant: object | null }[]}
+ */
+export function expandArtifactListing(artifacts) {
+  const rows = [];
+  for (const artifact of sortArtifacts(artifacts)) {
+    const variants = artifact.variants;
+    if (Array.isArray(variants) && variants.length) {
+      for (const variant of variants) {
+        rows.push({ artifact, variant });
+      }
+    } else {
+      rows.push({ artifact, variant: null });
+    }
+  }
+  return rows;
+}
+
+/**
  * @param {object} artifact
  */
 export function hrefForArtifact(artifact) {
@@ -200,26 +220,24 @@ export async function mountArtifactsRegistry(root) {
     return;
   }
 
-  const rows = sortArtifacts(registry.artifacts || []);
+  const rows = expandArtifactListing(registry.artifacts || []);
   if (!rows.length) {
     root.innerHTML = `<p class="artifacts-empty">No artifacts listed yet.</p>`;
     return;
   }
 
   const cards = rows
-    .map((a) => {
-      const href = escapeHtml(hrefForArtifact(a));
+    .map(({ artifact: a, variant }) => {
+      const pageHref = variant ? hrefForArtifactVariant(a, variant) : hrefForArtifact(a);
+      const href = escapeHtml(pageHref);
       const title = escapeHtml(a.title || "Untitled");
       const type = escapeHtml(artifactTypeLabel(a));
       const date = escapeHtml(formatArtifactDate(a.published_at));
-      const variantCount = a.variants?.length ?? 0;
-      const variantNote =
-        variantCount > 0
-          ? `<span class="artifact-card__variants">${variantCount} version${variantCount === 1 ? "" : "s"}</span>`
-          : "";
-      const primaryVariant = a.variants?.[0];
-      const cover = primaryCoverUrl(a);
-      const coverLink = primaryVariant ? hrefForArtifactVariant(a, primaryVariant) : hrefForArtifact(a);
+      const variantNote = variant?.label
+        ? `<span class="artifact-card__variants">${escapeHtml(variant.label)}</span>`
+        : "";
+      const cover = coverUrlForArtifact(a, variant || undefined);
+      const coverLink = pageHref;
       const coverHtml = cover
         ? coverFigureHtml(cover, coverLink, "artifact-card", {
             width: 320,

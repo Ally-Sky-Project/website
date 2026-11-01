@@ -4,7 +4,7 @@
       "id": "wonderwall-v2-1b",
       "type": "track",
       "title": "Wonderwall v2.1b",
-      "published_at": "2026-10-30T00:00:00.000Z",
+      "published_at": "2026-11-01T00:00:00.000Z",
       "nmf_alignment": {
         "reference": "Oasis · Wonderwall",
         "reference_date": "1995-10-30",
@@ -12,6 +12,12 @@
       },
       "related_transmission": { "slot": 4 },
       "variants": [
+        {
+          "id": "superposition",
+          "label": "Superposition version",
+          "cover_path": "/artifacts/assets/wonderwall-v2-1b/superposition-cover.png",
+          "lyrics_path": "/artifacts/content/wonderwall-v2-1b-superposition.txt"
+        },
         {
           "id": "complexity",
           "label": "Complexity version",

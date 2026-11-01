@@ -1,10 +1,10 @@
 import {
   artifactTypeLabel,
+  coverUrlForArtifact,
+  expandArtifactListing,
   formatArtifactDate,
   hrefForArtifact,
   hrefForArtifactVariant,
-  primaryCoverUrl,
-  sortArtifacts,
 } from "./artifacts.js";
 
 const REGISTRY_URL = "/artifacts/registry.json";
@@ -16,19 +16,17 @@ function escapeHtml(s) {
     .replace(/"/g, "&quot;");
 }
 
-function stackItemHtml(a, i) {
-  const primaryVariant = a.variants?.[0];
-  const href = escapeHtml(
-    primaryVariant ? hrefForArtifactVariant(a, primaryVariant) : hrefForArtifact(a),
-  );
+function stackItemHtml(a, variant, i) {
+  const pageHref = variant ? hrefForArtifactVariant(a, variant) : hrefForArtifact(a);
+  const href = escapeHtml(pageHref);
   const title = escapeHtml(a.title || "Untitled");
   const type = escapeHtml(artifactTypeLabel(a));
   const date = escapeHtml(formatArtifactDate(a.published_at));
   const latest = i === 0 ? " artifact-stack__item--latest" : "";
-  const sub = primaryVariant?.label
-    ? `<span class="artifact-stack__variant">${escapeHtml(primaryVariant.label)}</span>`
+  const sub = variant?.label
+    ? `<span class="artifact-stack__variant">${escapeHtml(variant.label)}</span>`
     : "";
-  const cover = primaryCoverUrl(a);
+  const cover = coverUrlForArtifact(a, variant || undefined);
   const thumb = cover
     ? `<span class="artifact-stack__frame"><img class="artifact-stack__cover" src="${escapeHtml(cover)}" alt="" width="9" height="16" loading="lazy" decoding="async" /></span>`
     : `<span class="artifact-stack__frame artifact-stack__frame--empty" aria-hidden="true"></span>`;
@@ -64,13 +62,13 @@ export async function mountArtifactStack(root, opts = {}) {
     return;
   }
 
-  const rows = sortArtifacts(registry.artifacts || []).slice(0, limit);
+  const rows = expandArtifactListing(registry.artifacts || []).slice(0, limit);
   if (!rows.length) {
     root.hidden = true;
     return;
   }
 
-  const items = rows.map((a, i) => stackItemHtml(a, i)).join("");
+  const items = rows.map(({ artifact, variant }, i) => stackItemHtml(artifact, variant, i)).join("");
 
   root.innerHTML = `
     <header class="artifact-stack__header">

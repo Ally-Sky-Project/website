@@ -40,8 +40,16 @@
             });
           return;
         }
-        if (/^artifacts\/[a-z0-9-]+$/i.test(path)) {
-          location.replace("/" + path + "/");
+        var artifact404 = path.match(/^artifacts\/([a-z0-9-]+)$/i);
+        if (artifact404) {
+          var canonical = "/artifacts/" + artifact404[1] + "/";
+          var here = location.pathname.replace(/\/$/, "") || "/";
+          var canonicalBare = canonical.replace(/\/$/, "");
+          if (here === canonicalBare) {
+            location.replace("/artifacts/");
+            return;
+          }
+          location.replace(canonical);
           return;
         }
         if (path && !/^\d+$/.test(path)) {

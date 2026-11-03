@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#06080c" />
-    <title>Privacy transmission · NTQTP</title>
+    <title>Privacy · Ally Sky Project</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -15,46 +15,33 @@
     <link rel="stylesheet" href="../css/wordmark.css" />
     <link rel="stylesheet" href="../css/site-nav.css" />
     <link rel="stylesheet" href="../css/site-footer.css" />
+    <link rel="stylesheet" href="../css/about.css" />
   </head>
   <body>
-    <div class="beacon">
+    <div class="beacon beacon--home">
       <div id="site-nav"></div>
-      <div class="transmission-wrap transmission-wrap--static">
-        <pre class="transmission transmission-routing" aria-label="Privacy transmission">
-==========================================
-ALLY SKY ENGINEERING // QUANTUM TRANSPORT GROUP
-==========================================
-
-PRIVACY TRANSMISSION (NTQTP) 1.8.0b
-DOCUMENT: BEACON POLICY
-
-------------------------------------------
-
-This public beacon does not use cookies or third-party analytics.
-We do not collect personal data through this page.
-
-If you follow a link to YouTube, Instagram, TikTok, or GitHub, those
-services operate under their own policies.
-
-Our hosting provider may process server logs (such as IP address and
-request time) for security and operation.
-
-------------------------------------------
-BEACON TELEMETRY (NTQTP)
-------------------------------------------
-> CLIENT TRACKING:  DISABLED
-> ANALYTICS:        NONE
-> COOKIES:          NONE
-
-> RETURN:           <a class="channel-link" href="../index.html">BEACON</a>
-==========================================</pre>
-      </div>
+      <article class="about-page" style="max-width: var(--site-prose-max, 35rem)">
+        <h1 class="about-page__title">Privacy</h1>
+        <p>
+          This site does not use cookies or third-party analytics. We do not collect personal data
+          through these pages.
+        </p>
+        <p>
+          If you follow a link to YouTube, Instagram, TikTok, or GitHub, those services operate
+          under their own policies.
+        </p>
+        <p>
+          Our hosting provider may process server logs (such as IP address and request time) for
+          security and operation.
+        </p>
+        <p><a href="../index.html">← Home</a></p>
+      </article>
       <div id="site-footer"></div>
     </div>
     <script type="module">
       import { mountSiteNav } from "../js/site-nav.js";
       import { mountSiteFooter } from "../js/site-footer.js";
-      mountSiteNav(document.getElementById("site-nav"), "beacon");
+      mountSiteNav(document.getElementById("site-nav"), "");
       mountSiteFooter(document.getElementById("site-footer"));
     </script>
   </body>

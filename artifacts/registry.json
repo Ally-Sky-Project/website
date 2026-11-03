@@ -1,6 +1,14 @@
 {
   "artifacts": [
     {
+      "id": "ai-in-the-arts",
+      "type": "essay",
+      "title": "AI in the Arts: Are you creating noise or another overplayed pop song?",
+      "published_at": "2026-11-03T00:00:00.000Z",
+      "body_path": "/artifacts/content/ai-in-the-arts.txt",
+      "ai_disclosure": "I wrote this text with near-zero AI-assisted writing (it just autocorrects spelling errors). What you are reading is my natural voice. While the writing is my own, I did use an AI fact-check for accuracy. If you prefer a different structure, a different voice, or a TL;DR, feel free to plug this into the LLM of your choice."
+    },
+    {
       "id": "wonderwall-v2-1b",
       "type": "track",
       "title": "Wonderwall v2.1b",
@@ -24,7 +32,7 @@
       "variants": [
         {
           "id": "superposition",
-          "label": "Wonderwall v2.1b (Superposition)",
+          "label": "Superposition version",
           "published_at": "2026-11-01T00:00:00.000Z",
           "cover_path": "/artifacts/assets/wonderwall-v2-1b/superposition-cover.png",
           "lyrics_path": "/artifacts/content/wonderwall-v2-1b-superposition.txt",

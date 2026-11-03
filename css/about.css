@@ -247,3 +247,44 @@
   letter-spacing: 0.02em;
   color: var(--accent-dim, #5a9ab8);
 }
+
+.about-disclosure {
+  margin: 2.25rem 0 0;
+  margin-left: var(--about-indent);
+  padding: 1rem 1.15rem 1.1rem;
+  border: 1px solid rgba(90, 154, 184, 0.28);
+  background: rgba(6, 10, 18, 0.85);
+  box-shadow: inset 0 0 0 1px rgba(142, 202, 232, 0.06);
+}
+
+.about-page .about-disclosure h2 {
+  margin: 0 0 0.85rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: var(--muted, #7a8a9a);
+}
+
+.about-page section.about-disclosure > ul {
+  margin-left: 0;
+  padding-left: 0;
+  border-left: none;
+}
+
+.about-page section.about-disclosure > p {
+  margin: 0;
+  padding-left: 0;
+  border-left: none;
+  font-size: 0.84rem;
+  line-height: 1.65;
+  color: rgba(232, 238, 244, 0.88);
+}
+
+.about-disclosure .about-colophon li {
+  border-left-color: rgba(90, 154, 184, 0.15);
+  font-size: 0.84rem;
+  color: rgba(232, 238, 244, 0.88);
+}
+
+.about-disclosure .about-colophon li:last-child {
+  margin-bottom: 0;
+}

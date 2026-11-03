@@ -1,6 +1,6 @@
-# allyskyproject.com — NTQTP beacon
+# allyskyproject.com — Ally Sky Project
 
-Minimal public site: NTQTP beacon home, **transmission registry** (comic publications), privacy page, and outbound channel links from `site.json`.
+Public site: home (transmission + artifact stacks), **transmission registry** (comic publications), artifact registry, about, and privacy.
 
 ## Live
 
@@ -14,11 +14,11 @@ Push to `main` → GitHub Actions → Pages. Custom domain: GitHub Pages setting
 
 ## Transmissions registry
 
-**URL:** `/transmissions/` — NTQTP transmission registry (Subject, encoding, ID, date, frames, payload, cross-post).
+**URL:** `/transmissions/` — comic transmissions (subject, encoding, ID, date, frames, payload, cross-post).
 
 Data comes from `comic/registry.json`. The page shows **one row per story** (latest `published_at` per `gscript` / `deck`); older IDs remain valid at `/{id}/`.
 
-Per-release fields include `reality_layer`, `reconstruction`, `frame_count`, and `payload_bytes` (NTQTP **message** size — same `deckPayloadByteLength` as the composer title slide, not PNG file size). Set on `npm run release` from the compiled deck.
+Per-release fields include `reality_layer`, `reconstruction`, `frame_count`, and `payload_bytes` (same `deckPayloadByteLength` as the composer title slide, not PNG file size). Set on `npm run release` from the compiled deck.
 
 Optional per-release field:
 

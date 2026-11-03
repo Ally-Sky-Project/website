@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wordmark matrix · Ally Sky Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Source+Code+Pro:ital,wght@0,500;0,800;1,800&display=block"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/beacon.css" />
+    <link rel="stylesheet" href="/css/wordmark.css" />
+    <link rel="stylesheet" href="/css/wordmark-matrix.css" />
+    <style>
+      .lab {
+        max-width: 40rem;
+        margin: 0 auto;
+        padding: 2rem 1.25rem 3rem;
+      }
+      .lab h1 {
+        font-family: "Source Code Pro", ui-monospace, monospace;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--accent, #8ecae8);
+        margin: 0 0 0.5rem;
+      }
+      .lab p {
+        font-size: 0.85rem;
+        line-height: 1.55;
+        color: var(--muted, #7a8a9a);
+        margin: 0 0 2rem;
+      }
+      .lab section {
+        margin-bottom: 2.5rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(232, 238, 244, 0.08);
+      }
+      .lab section:last-child {
+        border-bottom: none;
+      }
+      .lab pre {
+        margin: 1rem 0 0;
+        font-family: "Source Code Pro", ui-monospace, monospace;
+        font-size: 0.72rem;
+        line-height: 1.35;
+        color: var(--muted, #7a8a9a);
+        white-space: pre;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="beacon beacon--home">
+      <main class="lab">
+        <h1>Upper-triangular wordmark (6×6)</h1>
+        <p>Row slice reconstruction on a 6-column upper triangle. Light-blue streak from each letter.</p>
+
+        <section>
+          <div class="wordmark-matrix-wrap">
+            <div
+              class="wordmark-matrix wordmark-matrix--hero"
+              role="img"
+              aria-label="Ally Sky Project"
+              id="matrix-hero"
+            ></div>
+            <p class="wordmark-matrix-caption">Hero scale</p>
+          </div>
+        </section>
+
+        <section>
+          <div class="wordmark-matrix-wrap">
+            <div
+              class="wordmark-matrix"
+              role="img"
+              aria-label="Ally Sky Project"
+              id="matrix-default"
+            ></div>
+            <p class="wordmark-matrix-caption">Default</p>
+          </div>
+        </section>
+
+        <section>
+          <div class="wordmark-matrix-wrap">
+            <div
+              class="wordmark-matrix wordmark-matrix--compact"
+              role="img"
+              aria-label="Ally Sky Project"
+              id="matrix-compact"
+            ></div>
+            <p class="wordmark-matrix-caption">Compact — preferred stagger reference</p>
+          </div>
+          <pre>A  L  L  Y
+  S  K  Y
+    P  R  O
+      J  E
+        C
+          T</pre>
+        </section>
+      </main>
+    </div>
+    <script type="module">
+      /** Upper-tri rows aligned to 6 columns (col ≥ row); C/T on diagonal tail */
+      const ROWS = [
+        { row: 0, colStart: 0, span: 4, letters: "ALLY" },
+        { row: 1, colStart: 1, span: 3, letters: "SKY" },
+        { row: 2, colStart: 2, span: 3, letters: "PRO" },
+        { row: 3, colStart: 3, span: 2, letters: "JE" },
+        { row: 4, colStart: 4, span: 1, letters: "C" },
+        { row: 5, colStart: 5, span: 1, letters: "T" },
+      ];
+
+      function layerWithLetters(letters, layerClass) {
+        const layer = document.createElement("span");
+        layer.className = `wordmark__layer ${layerClass}`;
+        for (const ch of letters) {
+          const cell = document.createElement("span");
+          cell.className = "wordmark-matrix__glyph";
+          cell.textContent = ch;
+          layer.appendChild(cell);
+        }
+        return layer;
+      }
+
+      function mountRowLine({ row, colStart, span, letters }) {
+        const wrap = document.createElement("div");
+        wrap.className = "wordmark-matrix__row-line";
+        wrap.style.setProperty("--row", String(row));
+        wrap.style.setProperty("--col-start", String(colStart));
+        wrap.style.setProperty("--col-span", String(span));
+
+        const streaks = document.createElement("div");
+        streaks.className = "wordmark-matrix__streaks";
+        streaks.setAttribute("aria-hidden", "true");
+        for (let i = 0; i < letters.length; i++) {
+          const slot = document.createElement("span");
+          slot.className = "wordmark-matrix__streak-slot";
+          streaks.appendChild(slot);
+        }
+
+        const line = document.createElement("span");
+        line.className = "wordmark__line wordmark-matrix__line";
+        line.appendChild(layerWithLetters(letters, "wordmark__layer--bottom"));
+        line.appendChild(layerWithLetters(letters, "wordmark__layer--top"));
+
+        wrap.appendChild(streaks);
+        wrap.appendChild(line);
+        return wrap;
+      }
+
+      function mountMatrix(root) {
+        if (!root) return;
+        root.replaceChildren();
+        for (const spec of ROWS) {
+          root.appendChild(mountRowLine(spec));
+        }
+      }
+
+      for (const id of ["matrix-hero", "matrix-default", "matrix-compact"]) {
+        mountMatrix(document.getElementById(id));
+      }
+    </script>
+  </body>
+</html>

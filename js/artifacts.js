@@ -1,4 +1,5 @@
 const REGISTRY_URL = "/artifacts/registry.json";
+const REGISTRY_FETCH = { cache: "no-store" };
 
 const TYPE_LABELS = {
   track: "TRACK",
@@ -414,7 +415,7 @@ function proseHtmlFromText(raw, aboutStyle = false) {
 export async function mountArtifactsRegistry(root) {
   let registry;
   try {
-    const res = await fetch(REGISTRY_URL);
+    const res = await fetch(REGISTRY_URL, REGISTRY_FETCH);
     if (!res.ok) throw new Error(`Registry HTTP ${res.status}`);
     registry = await res.json();
   } catch {
@@ -471,7 +472,7 @@ export async function mountArtifactsRegistry(root) {
 export async function mountArtifactDetail(app, artifactId, opts = {}) {
   let registry;
   try {
-    const res = await fetch(REGISTRY_URL);
+    const res = await fetch(REGISTRY_URL, REGISTRY_FETCH);
     if (!res.ok) throw new Error(`Registry HTTP ${res.status}`);
     registry = await res.json();
   } catch {

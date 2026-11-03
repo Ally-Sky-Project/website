@@ -40,6 +40,10 @@
             });
           return;
         }
+        if (/^artifacts\/[a-z0-9-]+$/i.test(path)) {
+          location.replace("/" + path + "/");
+          return;
+        }
         if (path && !/^\d+$/.test(path)) {
           location.replace("/");
         }

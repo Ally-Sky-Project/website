@@ -55,7 +55,7 @@ export async function mountArtifactStack(root, opts = {}) {
 
   let registry;
   try {
-    const res = await fetch(REGISTRY_URL);
+    const res = await fetch(REGISTRY_URL, { cache: "no-store" });
     if (!res.ok) throw new Error(`Registry HTTP ${res.status}`);
     registry = await res.json();
   } catch {

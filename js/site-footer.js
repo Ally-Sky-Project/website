@@ -8,7 +8,7 @@ export function renderSiteFooter(opts = {}) {
     `<span class="site-footer__copy">© 2026 The Ally Sky Project</span>`,
     `<span class="site-footer__tagline">Built with human hands &amp; computational pipelines.</span>`,
     `<a class="site-footer__link" href="/about/#about-colophon">About / Colophon</a>`,
-    `<a class="site-footer__link" href="/legal/privacy.html">Privacy transmission</a>`,
+    `<a class="site-footer__link" href="/legal/privacy.html">Privacy</a>`,
   ];
   if (!minimal) {
     parts.push(`<a class="site-footer__link" href="/feed.xml">RSS</a>`);

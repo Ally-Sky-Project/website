@@ -393,7 +393,7 @@ export async function mountComicReader(app) {
       <h1>TRANSMISSION NOT FOUND</h1>
       <p class="meta">No official release for <code>${id}</code></p>
       <p class="meta">Digest <code>${parts.digest}</code> · version <code>${parts.version}</code></p>
-      <p class="back"><a href="/transmissions/">← Transmissions</a> · <a href="/">Beacon</a></p>`;
+      <p class="back"><a href="/transmissions/">← Transmissions</a> · <a href="/">Home</a></p>`;
     document.title = `Unknown · ${id}`;
     return;
   }
@@ -477,7 +477,7 @@ export async function mountComicReader(app) {
     ${crosspostBlock}
     ${carouselHtml}
     ${hashVerifyBlock}
-    <p class="back"><a href="/transmissions/">← Transmissions</a> · <a href="/">Beacon</a></p>`;
+    <p class="back"><a href="/transmissions/">← Transmissions</a> · <a href="/">Home</a></p>`;
 
   if (carousel.length) initFramesSection(app, carousel, adj);
   initHashVerifyCopy(app);

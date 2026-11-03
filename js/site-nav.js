@@ -1,8 +1,7 @@
-import { NTQTP_VERSION } from "./ntqtp-telemetry.js";
-import { renderNavWordmarkHtml, wireStabilizeButton } from "./wordmark-glitch.js";
+import { renderNavWordmarkHtml } from "./wordmark-glitch.js";
 
 const TABS = [
-  { href: "/", label: "Beacon", id: "beacon" },
+  { href: "/", label: "Home", id: "home" },
   { href: "/transmissions/", label: "Transmissions", id: "transmissions" },
   { href: "/artifacts/", label: "Artifacts", id: "artifacts" },
   { href: "/about/", label: "About", id: "about" },
@@ -22,10 +21,6 @@ export function renderSiteNav(activeId) {
     <div class="site-nav__brand-row">
       <a href="/" class="site-nav__brand" id="site-nav-brand" aria-label="Ally Sky Project home">${renderNavWordmarkHtml()}</a>
       <div class="site-nav__meta">
-        <button type="button" class="site-nav__stabilize" id="site-nav-stabilize" aria-pressed="false" aria-label="Stabilize wordmark glitch effects">
-          STABILIZE
-        </button>
-        <span class="site-nav__protocol" title="Noise-Tolerant Quantum Transport Protocol">NTQTP v${NTQTP_VERSION}</span>
         <a
           class="site-nav__github"
           id="site-nav-github"
@@ -56,6 +51,4 @@ export function mountSiteNav(el, activeId, _opts = {}) {
       if (link && url) link.href = url;
     })
     .catch(() => {});
-
-  wireStabilizeButton(el.querySelector("#site-nav-stabilize"));
 }

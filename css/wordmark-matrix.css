@@ -1,0 +1,172 @@
+/* 6×6 upper-triangular lockup — row slice + grid columns (no tiles, no outer clip) */
+
+.wordmark-matrix {
+  --wordmark-slice: 52%;
+  --wordmark-shift: 0.11em;
+  --wordmark-ink: #e8eef4;
+  --wm-col: 1.15ch;
+  --wm-row-h: 1.05em;
+  --wm-row-gap: 0.06em;
+
+  display: grid;
+  grid-template-columns: repeat(6, var(--wm-col));
+  grid-auto-rows: var(--wm-row-h);
+  row-gap: var(--wm-row-gap);
+  column-gap: 0.08em;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.1rem calc(var(--wm-streak-len) * 0.9) 0.15rem 0;
+  overflow: visible;
+  --wm-streak-len: 3.25em;
+  --wm-streak-h: 0.16em;
+  color: var(--wordmark-ink);
+  font-family: "Source Code Pro", ui-monospace, monospace;
+  font-style: italic;
+  font-weight: 800;
+  font-synthesis: none;
+  letter-spacing: 0;
+  line-height: 1.05;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  text-shadow:
+    1px 0 rgba(255, 90, 190, 0.28),
+    -1px 0 rgba(142, 202, 232, 0.28);
+}
+
+.wordmark-matrix__row-line {
+  --row: 0;
+  --col-start: 0;
+  --col-span: 1;
+  grid-row: calc(var(--row) + 1);
+  grid-column: calc(var(--col-start) + 1) / span var(--col-span);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  position: relative;
+  overflow: visible;
+}
+
+.wordmark-matrix__streaks {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wordmark-matrix__streak-slot {
+  flex: 1 1 0;
+  min-width: 0;
+  position: relative;
+  height: 100%;
+}
+
+.wordmark-matrix__streak-slot:only-child {
+  flex: 1 1 auto;
+}
+
+.wordmark-matrix__streak-slot::after {
+  content: "";
+  position: absolute;
+  left: 52%;
+  top: 50%;
+  width: var(--wm-streak-len);
+  height: var(--wm-streak-h);
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(142, 202, 232, 0.75) 0%,
+    rgba(142, 202, 232, 0.35) 35%,
+    rgba(90, 154, 184, 0.08) 70%,
+    transparent 100%
+  );
+  filter: blur(0.6px);
+}
+
+.wordmark-matrix__line {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  overflow: hidden;
+  min-height: var(--wm-row-h);
+  padding-right: calc(var(--wordmark-shift) + 0.05em);
+  font: inherit;
+  letter-spacing: 0;
+}
+
+.wordmark-matrix__line .wordmark__layer {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  white-space: nowrap;
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+.wordmark-matrix__line .wordmark__layer--bottom {
+  clip-path: inset(var(--wordmark-slice) 0 0 0);
+}
+
+.wordmark-matrix__line .wordmark__layer--top {
+  position: absolute;
+  inset: 0;
+  padding-right: calc(var(--wordmark-shift) + 0.05em);
+  clip-path: inset(0 0 calc(100% - var(--wordmark-slice)) 0);
+  transform: translateX(var(--wordmark-shift));
+  pointer-events: none;
+}
+
+.wordmark-matrix__glyph {
+  flex: 1 1 0;
+  min-width: 0;
+  text-align: center;
+}
+
+.wordmark-matrix__glyph:first-child:last-child {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.wordmark-matrix--compact {
+  font-size: 0.72rem;
+  --wm-col: 1.08ch;
+  --wm-row-h: 1em;
+  --wm-row-gap: 0.04em;
+  --wm-streak-len: 2.75em;
+  --wm-streak-h: 0.12em;
+}
+
+.wordmark-matrix--hero {
+  font-size: clamp(1.35rem, 4.2vw, 2.05rem);
+  --wm-col: 1.18ch;
+  --wm-row-h: 1.08em;
+  --wm-row-gap: 0.07em;
+  --wm-streak-len: 4.5em;
+  --wm-streak-h: 0.18em;
+}
+
+.wordmark-matrix-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  overflow: visible;
+  max-width: 100%;
+}
+
+.wordmark-matrix-caption {
+  margin: 0;
+  font-family: "Source Code Pro", ui-monospace, monospace;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted, #7a8a9a);
+}

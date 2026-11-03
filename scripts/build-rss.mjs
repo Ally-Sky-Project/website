@@ -71,7 +71,7 @@ function buildAtom(registry) {
   <link href="${escapeXml(SITE_URL)}/feed.xml" rel="self" type="application/atom+xml"/>
   <id>${escapeXml(FEED_ID)}</id>
   <updated>${escapeXml(updated)}</updated>
-  <subtitle>New NTQTP transmissions (one entry per story, latest publication ID).</subtitle>
+  <subtitle>New Ally Sky Project transmissions (one entry per story, latest publication ID).</subtitle>
   <author>
     <name>Ally Sky Project</name>
   </author>

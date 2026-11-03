@@ -2,6 +2,7 @@ const REGISTRY_URL = "/artifacts/registry.json";
 
 const TYPE_LABELS = {
   track: "TRACK",
+  essay: "ESSAY",
 };
 
 function escapeHtml(s) {
@@ -311,12 +312,6 @@ function relatedTransmissionHtml(artifact) {
   </div>`;
 }
 
-/**
- * @param {string} coverSrc
- * @param {string | null} href
- * @param {string} classPrefix artifact-card | artifact-detail
- * @param {{ width: number, height: number, loading: string }} img
- */
 function coverFigureHtml(coverSrc, href, classPrefix, img) {
   const imgTag = `<img class="${classPrefix}__cover" src="${escapeHtml(coverSrc)}" alt="" width="${img.width}" height="${img.height}" loading="${img.loading}" decoding="async" />`;
   if (!href) {
@@ -331,6 +326,86 @@ function coverFigureHtml(coverSrc, href, classPrefix, img) {
       </figure>`;
   }
   return `<a class="artifact-card__cover-link" href="${escapeHtml(href)}">${imgTag}</a>`;
+}
+
+/**
+ * @param {object} artifact
+ * @param {object | null | undefined} variant
+ */
+function bodyPathForArtifact(artifact, variant) {
+  const v = variant || {};
+  return v.body_path || v.lyrics_path || artifact.body_path || artifact.lyrics_path || "";
+}
+
+/**
+ * @param {object} artifact
+ * @param {object | null | undefined} variant
+ */
+async function loadArtifactBody(artifact, variant) {
+  const inline = variant?.lyrics || variant?.body || artifact.body || artifact.lyrics || "";
+  if (inline) return String(inline);
+  const path = bodyPathForArtifact(artifact, variant);
+  if (!path) return "";
+  try {
+    const res = await fetch(path);
+    if (!res.ok) return "";
+    return await res.text();
+  } catch {
+    return "";
+  }
+}
+
+/**
+ * @param {string} raw
+ */
+function inlineProseHtml(raw) {
+  const parts = String(raw).split(/\*\*(.+?)\*\*/g);
+  let out = "";
+  for (let i = 0; i < parts.length; i++) {
+    const chunk = escapeHtml(parts[i]);
+    if (i % 2 === 1) out += `<strong>${chunk}</strong>`;
+    else out += chunk;
+  }
+  return out;
+}
+
+/**
+ * @param {string} text
+ */
+function essayAiDisclosureHtml(text) {
+  const t = String(text || "").trim();
+  if (!t) return "";
+  return `<section class="about-disclosure" aria-labelledby="artifact-ai-disclosure">
+    <h2 id="artifact-ai-disclosure">AI Disclosure</h2>
+    <p>${escapeHtml(t)}</p>
+  </section>`;
+}
+
+/**
+ * @param {string} raw
+ */
+function proseHtmlFromText(raw, aboutStyle = false) {
+  const blocks = String(raw || "")
+    .trim()
+    .split(/\n\n+/);
+  let firstPara = true;
+  return blocks
+    .map((block) => {
+      const trimmed = block.trim();
+      if (!trimmed) return "";
+      if (trimmed.startsWith("## ")) {
+        return `<h2>${escapeHtml(trimmed.slice(3))}</h2>`;
+      }
+      const para = trimmed.replace(/\n+/g, " ");
+      if (aboutStyle) {
+        const lead = firstPara ? ` class="about-page__lead"` : "";
+        firstPara = false;
+        return `<p${lead}>${inlineProseHtml(para)}</p>`;
+      }
+      return `<p>${inlineProseHtml(para)}</p>`;
+    })
+    .filter(Boolean)
+    .join("\n");
 }
 
 /**
@@ -413,18 +488,22 @@ export async function mountArtifactDetail(app, artifactId, opts = {}) {
   }
 
   const variants = artifact.variants || [];
-  if (!variants.length) {
-    app.innerHTML = `<p class="artifacts-empty">No versions published for this artifact yet.</p>`;
+  const hasVariants = variants.length > 0;
+  if (!hasVariants && !bodyPathForArtifact(artifact, null)) {
+    app.innerHTML = `<p class="artifacts-empty">No content published for this artifact yet.</p>`;
     return;
   }
 
-  const params = new URLSearchParams(location.search);
-  let activeId = params.get("version") || variants[0].id;
-  if (!variants.some((v) => v.id === activeId)) activeId = variants[0].id;
-
-  const tabs =
-    variants.length > 1
-      ? `<div class="artifact-tabs" role="tablist" aria-label="Track versions">
+  let active = null;
+  let tabs = "";
+  if (hasVariants) {
+    const params = new URLSearchParams(location.search);
+    let activeId = params.get("version") || variants[0].id;
+    if (!variants.some((v) => v.id === activeId)) activeId = variants[0].id;
+    active = variants.find((v) => v.id === activeId) || variants[0];
+    tabs =
+      variants.length > 1
+        ? `<div class="artifact-tabs" role="tablist" aria-label="Track versions">
           ${variants
             .map((v) => {
               const selected = v.id === activeId;
@@ -433,16 +512,16 @@ export async function mountArtifactDetail(app, artifactId, opts = {}) {
             })
             .join("")}
         </div>`
-      : `<div class="artifact-tabs artifact-tabs--single" role="tablist" aria-label="Track versions">
+        : `<div class="artifact-tabs artifact-tabs--single" role="tablist" aria-label="Track versions">
           <span class="artifact-tabs__tab is-active" role="tab" aria-selected="true">${escapeHtml(variants[0].label || variants[0].id)}</span>
         </div>`;
+  }
 
-  const active = variants.find((v) => v.id === activeId) || variants[0];
   const sidebarEl = opts.sidebar ?? document.getElementById("artifact-sidebar");
-  mountArtifactSidebar(sidebarEl, artifact, active);
+  mountArtifactSidebar(sidebarEl, artifact, active || {});
 
-  const cover = coverUrlForArtifact(artifact, active);
-  const coverPageHref = hrefForArtifactVariant(artifact, active);
+  const cover = coverUrlForArtifact(artifact, active || undefined);
+  const coverPageHref = active ? hrefForArtifactVariant(artifact, active) : hrefForArtifact(artifact);
   const coverHtml = cover
     ? coverFigureHtml(cover, coverPageHref, "artifact-detail", {
         width: 1024,
@@ -450,28 +529,36 @@ export async function mountArtifactDetail(app, artifactId, opts = {}) {
         loading: "eager",
       })
     : "";
-  let lyrics = active.lyrics || "";
-  if (!lyrics && active.lyrics_path) {
-    try {
-      const lr = await fetch(active.lyrics_path);
-      if (lr.ok) lyrics = await lr.text();
-    } catch {
-      lyrics = "";
-    }
-  }
-  lyrics = lyrics.replace(/^[^\n]*Official lyrics[^\n]*\n/i, "").trim();
 
-  document.title = `${artifact.title || "Artifact"} · ${active.label || active.id} · Ally Sky`;
+  const isEssay = artifact.type === "essay";
+  let body = await loadArtifactBody(artifact, active);
+  if (!isEssay) {
+    body = body.replace(/^[^\n]*Official lyrics[^\n]*\n/i, "").trim();
+  }
+
+  if (hasVariants && active) {
+    document.title = `${artifact.title || "Artifact"} · ${active.label || active.id} · Ally Sky`;
+  } else {
+    document.title = `${artifact.title || "Artifact"} · Ally Sky Project`;
+  }
+
+  const bodyHtml = isEssay
+    ? `<div class="about-page artifact-essay"><article aria-label="Essay">${proseHtmlFromText(body, true) || "<p>—</p>"}</article>${essayAiDisclosureHtml(artifact.ai_disclosure)}</div>`
+    : `<pre class="artifact-lyrics transmission no-glitch" aria-label="Lyrics">${escapeHtml(body || "—")}</pre>`;
+
+  const metaVariant = hasVariants ? active : null;
+  const essayHeaderClass = isEssay ? " artifact-detail__header--essay" : "";
+  const titleClass = isEssay ? "about-page__title" : "";
 
   app.innerHTML = `
     ${coverHtml}
-    <header class="artifact-detail__header">
+    <header class="artifact-detail__header${essayHeaderClass}">
       <p class="artifact-detail__type">${escapeHtml(artifactTypeLabel(artifact))}</p>
-      <h1>${escapeHtml(artifact.title || "Untitled")}</h1>
-      <p class="artifact-detail__meta">${artifactListingMetaHtml(artifact, active)}</p>
+      <h1 class="${titleClass}">${escapeHtml(artifact.title || "Untitled")}</h1>
+      <p class="artifact-detail__meta">${artifactListingMetaHtml(artifact, metaVariant)}</p>
       ${relatedTransmissionHtml(artifact)}
       ${tabs}
     </header>
-    <pre class="artifact-lyrics transmission no-glitch" aria-label="Lyrics">${escapeHtml(lyrics || "—")}</pre>
-    <p class="artifact-detail__back"><a href="/artifacts/">← Artifacts</a> · <a href="/">Beacon</a></p>`;
+    ${bodyHtml}
+    <p class="artifact-detail__back"><a href="/artifacts/">← Artifacts</a> · <a href="/">Home</a></p>`;
 }

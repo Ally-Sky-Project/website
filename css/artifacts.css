@@ -274,6 +274,32 @@
   font-size: var(--beacon-transmission-size, 12pt);
 }
 
+/* Essay artifacts reuse About typography (about.css) */
+.artifact-essay {
+  --about-indent: 0;
+  max-width: var(--site-prose-max, 35rem);
+}
+
+.artifact-essay .about-disclosure {
+  margin-left: 0;
+}
+
+.artifact-detail__header--essay h1.about-page__title {
+  font-family: var(--mono, "Source Code Pro", ui-monospace, monospace);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--accent, #8ecae8);
+  margin: 0 0 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+.about-page.artifact-essay strong {
+  font-family: var(--mono, "Source Code Pro", ui-monospace, monospace);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--accent-dim, #5a9ab8);
+}
+
 .artifact-detail__back {
   margin: 0;
   font-size: 0.8rem;

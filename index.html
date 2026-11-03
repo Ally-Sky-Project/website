@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Ally Sky Engineering — Noise-Tolerant Quantum Transport Protocol (NTQTP) public beacon. Phase I online; site expansion in progress."
+      content="The Ally Sky Project — science fiction across narrative, music, visual art, and interactive design."
     />
     <meta name="theme-color" content="#06080c" />
     <meta name="robots" content="index, follow" />
-    <title>Ally Sky Engineering · NTQTP beacon</title>
+    <title>Ally Sky Project</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -24,7 +24,6 @@
     <link rel="stylesheet" href="css/artifact-stack.css" />
     <link rel="modulepreload" href="js/site-nav.js" />
     <link rel="modulepreload" href="js/wordmark-glitch.js" />
-    <link rel="modulepreload" href="js/ntqtp-telemetry.js" />
   </head>
   <body>
     <div class="beacon beacon--home">
@@ -41,32 +40,6 @@
         aria-label="Artifact stack"
         hidden
       ></aside>
-      <div class="transmission-wrap is-pending" id="transmission-wrap">
-        <div class="transmission-noise" aria-hidden="true"></div>
-        <div class="transmission-glitch-zone">
-          <pre
-            class="transmission transmission-main"
-            id="transmission"
-            aria-label="Engineering transmission"
-          ></pre>
-          <pre class="transmission transmission-tear" aria-hidden="true"></pre>
-        </div>
-        <pre
-          class="transmission transmission-routing no-glitch"
-          id="channel-table"
-          hidden
-          aria-label="Outbound channel registry"
-        ></pre>
-        <pre class="transmission transmission-routing no-glitch transmission-meta" aria-label="Beacon telemetry">
-------------------------------------------
-BEACON TELEMETRY (NTQTP)
-------------------------------------------
-> CLIENT TRACKING:  DISABLED
-> ANALYTICS:        NONE
-> COOKIES:          NONE
-> POLICY:           <a class="channel-link" href="legal/privacy.html">PRIVACY TRANSMISSION</a>
-==========================================</pre>
-      </div>
       <div id="site-footer"></div>
     </div>
 
@@ -75,119 +48,12 @@ BEACON TELEMETRY (NTQTP)
       import { mountSiteFooter } from "./js/site-footer.js";
       import { mountTransmissionStack } from "./js/transmission-stack.js";
       import { mountArtifactStack } from "./js/artifact-stack.js";
+
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-      function flushFrames() {
-        return new Promise((resolve) => {
-          requestAnimationFrame(() => requestAnimationFrame(resolve));
-        });
-      }
-
-      mountSiteNav(document.getElementById("site-nav"), "beacon", { reducedMotion });
+      mountSiteNav(document.getElementById("site-nav"), "home", { reducedMotion });
       mountSiteFooter(document.getElementById("site-footer"));
-
-      const CODATA = {
-        hbar: 1.054571817e-34,
-        G: 6.6743e-11,
-        c: 299792458,
-      };
-
-      function planckHz() {
-        const { hbar, G, c } = CODATA;
-        const tP = Math.sqrt((hbar * G) / c ** 5);
-        return 1 / tP;
-      }
-
-      function buildTransmission(rule, channel, version) {
-        const f = planckHz();
-        const fStr = f.toExponential(6);
-
-        return `${rule}
-ALLY SKY ENGINEERING // QUANTUM TRANSPORT GROUP
-${rule}
-
-NOISE-TOLERANT QUANTUM TRANSPORT PROTOCOL (NTQTP) ${version}
-STATUS: PHASE I ONLINE · EXPANSION IN PROGRESS
-
-PACKAGES ON THIS CHANNEL REQUIRE EXTREME REDUNDANCY (ρ ≥ 100)
-TO SURVIVE DECOHERENCE AND BIT-FLIP NOISE ACROSS PATHS.
-
-TARGET CLOCK: <span class="no-glitch">f_P = ${fStr} Hz</span>
-SYNC:         PLANCK GATE PENDING
-
-> LINK STATUS: <span class="blink no-glitch">STANDBY...</span>
-> NTQTP HANDSHAKE:     [ retry 3/∞ ]
-> CHANNEL NOISE:       ${channel.noiseBand} · QBER ${channel.qber}
-> REDUNDANCY FACTOR:   ρ = ${channel.rho}
-> ERROR TOLERANCE:     ${channel.logicalErr} logical · ${channel.effectiveErr} effective
-> PATH DRIFT:          ± unresolved
-${rule}`;
-      }
-
-      const { measureRuleCounts, expandRuleLinesInHtml } = await import(
-        "./js/transmission-rules.js"
-      );
-      const { beaconChannelTelemetry, NTQTP_VERSION } = await import("./js/ntqtp-telemetry.js");
-      const channel = beaconChannelTelemetry();
-
-      const pre = document.getElementById("transmission");
-      pre.textContent = " ";
-      const ruleCounts = await measureRuleCounts(pre);
-      const rule = "=".repeat(ruleCounts.eqCount);
-      pre.innerHTML = buildTransmission(rule, channel, NTQTP_VERSION);
-
-      const meta = document.querySelector(".transmission-meta");
-      if (meta) {
-        meta.innerHTML = expandRuleLinesInHtml(meta.innerHTML, ruleCounts);
-      }
-
-      const { initBeaconGlitch } = await import("./js/beacon-glitch.js");
-      const { registerGlitchTarget } = await import("./js/wordmark-glitch.js");
-      const transmissionWrap = document.getElementById("transmission-wrap");
-      const beaconCtrl = initBeaconGlitch(transmissionWrap, { reducedMotion });
-      registerGlitchTarget(beaconCtrl);
-
-      await flushFrames();
-      transmissionWrap?.classList.remove("is-pending");
-
       mountTransmissionStack(document.getElementById("transmission-stack"));
       mountArtifactStack(document.getElementById("artifact-stack"));
-
-      async function loadChannels() {
-        const table = document.getElementById("channel-table");
-        try {
-          const res = await fetch("site.json");
-          if (!res.ok) return;
-          const data = await res.json();
-          const social = data.social || {};
-          const labels = {
-            youtube: "YOUTUBE",
-            instagram: "INSTAGRAM",
-            tiktok: "TIKTOK",
-            github: "GITHUB",
-          };
-          const dash = "-".repeat(ruleCounts.dashCount);
-          const lines = [dash, "OUTBOUND CHANNEL REGISTRY (NTQTP)", dash];
-          let count = 0;
-          for (const [key, label] of Object.entries(labels)) {
-            const url = social[key];
-            if (!url) continue;
-            count++;
-            const esc = (s) =>
-              s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
-            lines.push(
-              `> OPEN CHANNEL: <a class="channel-link" href="${esc(url)}" rel="noopener noreferrer">${label}</a>  <span class="channel-status">[ IDLE · AWAITING PAYLOAD ]</span>`
-            );
-          }
-          if (count === 0) return;
-          table.innerHTML = lines.join("\n");
-          table.hidden = false;
-        } catch {
-          /* static hosting without site.json is fine */
-        }
-      }
-
-      loadChannels();
     </script>
   </body>
 </html>

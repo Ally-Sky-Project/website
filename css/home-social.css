@@ -1,0 +1,87 @@
+/* Third-party marks: BandLab® (BandLab Technologies) and Reddit (Reddit, Inc.) — used only as links to official profiles. */
+
+.home-social {
+  min-width: 0;
+  max-width: var(--site-column-max);
+  margin: 0 0 1.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line, rgba(232, 238, 244, 0.14));
+}
+
+.home-social__section-title {
+  margin: 0 0 0.75rem;
+  font-family: var(--mono, "Source Code Pro", ui-monospace, monospace);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-dim, #5a9ab8);
+}
+
+.home-social__row {
+  margin: 0 0 1rem;
+}
+
+.home-social__row:last-of-type {
+  margin-bottom: 1rem;
+}
+
+.home-social__platform-link {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ink, #e8eef4);
+  text-decoration: none;
+}
+
+.home-social__platform-link:hover {
+  color: var(--accent, #8ecae8);
+}
+
+.home-social__platform-link:hover .home-social__platform-logo {
+  opacity: 0.95;
+}
+
+.home-social__platform-link:focus-visible {
+  outline: 1px solid var(--accent, #8ecae8);
+  outline-offset: 3px;
+}
+
+.home-social__platform-logo {
+  display: block;
+  width: auto;
+  height: 1.35rem;
+  flex: 0 0 auto;
+}
+
+/* Compact Snoo / app-style mark (square); wordmarks keep height-only sizing above. */
+.home-social__platform-logo--icon {
+  width: 1.65rem;
+  height: 1.65rem;
+}
+
+.home-social__handle {
+  font-family: var(--mono, "Source Code Pro", ui-monospace, monospace);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--accent-dim, #5a9ab8);
+}
+
+.home-social__platform-link:hover .home-social__handle {
+  color: var(--accent, #8ecae8);
+  text-decoration: underline;
+}
+
+.home-social p {
+  margin: 0 0 0.85rem;
+  font-family: var(--display);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--ink, #e8eef4);
+}
+
+.home-social p:last-of-type {
+  margin-bottom: 0;
+}

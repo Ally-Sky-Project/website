@@ -61,6 +61,10 @@ Open http://127.0.0.1:8080/ — comics at **`http://127.0.0.1:8080/{id}`** (e.g.
 
 Plain `python3 -m http.server` does not route `/{id}`; use the Node server above.
 
+### Markdown export preview (local)
+
+**Can you see the music?** (Google Doc export): http://127.0.0.1:8080/experiments/can-you-see-the-music/ — see `experiments/can-you-see-the-music/README.md` to refresh files from `comic/slides`.
+
 ## License
 
 Site HTML/CSS: MIT — [LICENSE](LICENSE).

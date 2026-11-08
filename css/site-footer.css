@@ -41,6 +41,10 @@
   text-decoration: none;
 }
 
+.site-footer__link:visited {
+  color: var(--accent-dim, #5a9ab8);
+}
+
 .site-footer__link:hover {
   color: var(--accent, #8ecae8);
   text-decoration: underline;

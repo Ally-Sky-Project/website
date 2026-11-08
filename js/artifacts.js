@@ -177,6 +177,7 @@ export function expandArtifactListing(artifacts) {
  * @param {object} artifact
  */
 export function hrefForArtifact(artifact) {
+  if (artifact?.page_href) return String(artifact.page_href);
   return `/artifacts/${artifact.id}/`;
 }
 

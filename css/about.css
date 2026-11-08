@@ -113,8 +113,40 @@
   font-size: 1rem;
   font-weight: 500;
   color: var(--accent, #8ecae8);
-  margin: 0 0 1.25rem;
+  margin: 0 0 0.45rem;
   letter-spacing: 0.04em;
+}
+
+.about-page__listed {
+  margin: 0 0 1.25rem;
+  font-family: var(--mono, "Source Code Pro", ui-monospace, monospace);
+  font-size: 0.75rem;
+  color: var(--muted, #7a8a9a);
+}
+
+.about-page__listed code {
+  font-size: 0.75rem;
+}
+
+.about-page__meta {
+  margin: -0.65rem 0 1.35rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: rgba(232, 238, 244, 0.62);
+}
+
+.about-page__meta a {
+  color: var(--accent-dim, #5a9ab8);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.about-page__meta a:hover {
+  color: var(--accent, #8ecae8);
+}
+
+.about-page__meta--end {
+  margin: 2rem 0 0;
 }
 
 .about-page__lead {
@@ -153,6 +185,20 @@
   color: var(--ink, #e8eef4);
   font-size: 0.9rem;
   line-height: 1.65;
+}
+
+.about-page a {
+  color: var(--accent-dim, #5a9ab8);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.about-page a:visited {
+  color: var(--accent-dim, #5a9ab8);
+}
+
+.about-page a:hover {
+  color: var(--accent, #8ecae8);
 }
 
 .about-spoilers {

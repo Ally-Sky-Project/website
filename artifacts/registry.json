@@ -1,6 +1,13 @@
 {
   "artifacts": [
     {
+      "id": "is-art-existential-ai-dread",
+      "type": "essay",
+      "title": "Is Art the Solution to Existential AI Dread?",
+      "published_at": "2026-11-08T00:00:00.000Z",
+      "page_href": "/about/"
+    },
+    {
       "id": "ai-in-the-arts",
       "type": "essay",
       "title": "AI in the Arts: Are you creating noise or another overplayed pop song?",

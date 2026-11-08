@@ -84,7 +84,8 @@ function main() {
   let count = 0;
 
   for (const artifact of registry.artifacts || []) {
-    if (artifact.type !== "essay" || !artifact.id || !artifact.body_path) continue;
+    if (artifact.type !== "essay" || !artifact.id) continue;
+    if (!artifact.body_path) continue;
     const bodyText = readBody(artifact.body_path);
     const outDir = path.join(ROOT, "artifacts", artifact.id);
     fs.mkdirSync(outDir, { recursive: true });

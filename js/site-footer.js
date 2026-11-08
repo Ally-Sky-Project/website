@@ -7,7 +7,7 @@ export function renderSiteFooter(opts = {}) {
   const parts = [
     `<span class="site-footer__copy">© 2026 The Ally Sky Project</span>`,
     `<span class="site-footer__tagline">Built with human hands &amp; computational pipelines.</span>`,
-    `<a class="site-footer__link" href="/about/#about-colophon">About / Colophon</a>`,
+    `<a class="site-footer__link" href="/about/">About</a>`,
     `<a class="site-footer__link" href="/legal/privacy.html">Privacy</a>`,
   ];
   if (!minimal) {
